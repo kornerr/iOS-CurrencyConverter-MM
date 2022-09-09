@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '14.0'
+
+target 'App' do
+  use_frameworks!
+  pod 'Converter', :path => '../mod/Converter'
+  pod 'ConverterUI', :path => '../mod/ConverterUI'
+  pod 'MPAK', :path => '../mod/MPAK'
+  pod 'SUI', :path => '../mod/SUI'
+end

@@ -1,0 +1,34 @@
+PODS:
+  - Converter (2022.09.07):
+    - ConverterUI
+    - MPAK
+    - SUI
+  - ConverterUI (2022.09.09)
+  - MPAK (2022.06.29)
+  - SUI (2022.09.08)
+
+DEPENDENCIES:
+  - Converter (from `../mod/Converter`)
+  - ConverterUI (from `../mod/ConverterUI`)
+  - MPAK (from `../mod/MPAK`)
+  - SUI (from `../mod/SUI`)
+
+EXTERNAL SOURCES:
+  Converter:
+    :path: "../mod/Converter"
+  ConverterUI:
+    :path: "../mod/ConverterUI"
+  MPAK:
+    :path: "../mod/MPAK"
+  SUI:
+    :path: "../mod/SUI"
+
+SPEC CHECKSUMS:
+  Converter: 9d2df50233f37b1ee51a1b1dfdeb3ae56400ed4d
+  ConverterUI: 581f62f6f2d251de5f30b7e7714773ca998eb751
+  MPAK: 7fc2e250a1bc46544263d5fbe4936de2c5286b10
+  SUI: 54f52eb52034844063257869bf6e44e520522951
+
+PODFILE CHECKSUM: 3440eaddd508f2ffa7e4184a98584b745b007c6d
+
+COCOAPODS: 1.9.1

@@ -1,0 +1,13 @@
+name: MMCC
+options:
+    bundleIdPrefix: org.opengamestudio
+targets:
+    App:
+        type: application
+        platform: iOS
+        deploymentTarget: "14.0"
+        sources:
+            - path: "../src"
+        settings:
+            base:
+                INFOPLIST_FILE: Info.plist

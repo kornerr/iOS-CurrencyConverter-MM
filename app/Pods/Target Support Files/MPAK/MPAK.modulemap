@@ -1,0 +1,6 @@
+framework module MPAK {
+  umbrella header "MPAK-umbrella.h"
+
+  export *
+  module * { export * }
+}
