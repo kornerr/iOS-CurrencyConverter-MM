@@ -32,10 +32,8 @@ extension ConverterUI.V {
       Spacer()
         .frame(width: 5)
       TextField("", text: $vm.amountSrc)
-        .autocapitalization(.none)
-        .disableAutocorrection(true)
         .keyboardType(.decimalPad)
-        .font(.system(size: 59, weight: .thin))
+        .font(.system(size: 58, weight: .thin))
         .foregroundColor(Const.purple)
     }
       .background(Color.white)
