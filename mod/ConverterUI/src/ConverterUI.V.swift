@@ -15,8 +15,9 @@ extension ConverterUI {
         Spacer()
           .background(Const.purple)
           .edgesIgnoringSafeArea(.all)
-        VStack {
+        VStack(spacing: 0) {
           amountSrc
+            .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
           Spacer()
         }
       }
@@ -28,11 +29,15 @@ extension ConverterUI {
 extension ConverterUI.V {
   private var amountSrc: some View {
     HStack {
+      Spacer()
+        .frame(width: 5)
       TextField("", text: $vm.amountSrc)
         .autocapitalization(.none)
         .disableAutocorrection(true)
         .keyboardType(.decimalPad)
-        /**/.border(Color.gray.opacity(0.2), width: 1)
+        .font(.system(size: 59, weight: .thin))
+        .foregroundColor(Const.purple)
     }
+      .background(Color.white)
   }
 }
