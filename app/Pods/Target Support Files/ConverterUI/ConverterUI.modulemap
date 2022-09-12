@@ -1,6 +1,0 @@
-framework module ConverterUI {
-  umbrella header "ConverterUI-umbrella.h"
-
-  export *
-  module * { export * }
-}
