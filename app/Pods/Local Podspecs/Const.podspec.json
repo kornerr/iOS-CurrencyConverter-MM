@@ -1,23 +1,18 @@
 {
-  "name": "ConverterUI",
-  "version": "2022.09.09",
+  "name": "Const",
+  "version": "2022.09.12",
   "license": "ZLIB",
   "summary": "MM",
-  "homepage": "https://github.com/kornerr/MM",
+  "homepage": "https://github.com/kornerr/iOS-CurrencyConverter-MM",
   "authors": "Michael Kapelko",
   "source": {
     "git": "https://fake.com/FAKE.git",
-    "tag": "2022.09.09"
+    "tag": "2022.09.12"
   },
   "source_files": "src/*.swift",
   "swift_versions": "5.2",
   "platforms": {
     "ios": "14.0"
-  },
-  "dependencies": {
-    "Const": [
-
-    ]
   },
   "swift_version": "5.2"
 }

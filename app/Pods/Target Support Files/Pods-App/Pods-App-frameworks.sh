@@ -197,12 +197,14 @@ if [ -r "${ARTIFACT_LIST_FILE}" ]; then
 fi
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Const/Const.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Converter/Converter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ConverterUI/ConverterUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MPAK/MPAK.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SUI/SUI.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/Const/Const.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Converter/Converter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ConverterUI/ConverterUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MPAK/MPAK.framework"

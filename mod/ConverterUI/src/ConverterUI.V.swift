@@ -1,4 +1,5 @@
 import Combine
+import Const
 import SwiftUI
 
 extension ConverterUI {
@@ -10,14 +11,28 @@ extension ConverterUI {
     }
 
     public var body: some View {
-      VStack {
-        Text("something")
+      ZStack {
+        Spacer()
+          .background(Const.purple)
+          .edgesIgnoringSafeArea(.all)
+        VStack {
+          amountSrc
+          Spacer()
+        }
       }
-        .edgesIgnoringSafeArea(.all)
         .animation(.easeInOut(duration: 0.3))
     }
   }
 }
 
-// MARK: - Поля ввода
-
+extension ConverterUI.V {
+  private var amountSrc: some View {
+    HStack {
+      TextField("", text: $vm.amountSrc)
+        .autocapitalization(.none)
+        .disableAutocorrection(true)
+        .keyboardType(.decimalPad)
+        /**/.border(Color.gray.opacity(0.2), width: 1)
+    }
+  }
+}

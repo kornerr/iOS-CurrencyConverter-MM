@@ -12,7 +12,7 @@
   "source_files": "src/*.swift",
   "swift_versions": "5.2",
   "platforms": {
-    "ios": "13.0"
+    "ios": "14.0"
   },
   "swift_version": "5.2"
 }

@@ -1,19 +1,24 @@
 PODS:
+  - Const (2022.09.12)
   - Converter (2022.09.07):
     - ConverterUI
     - MPAK
     - SUI
-  - ConverterUI (2022.09.09)
+  - ConverterUI (2022.09.09):
+    - Const
   - MPAK (2022.06.29)
   - SUI (2022.09.08)
 
 DEPENDENCIES:
+  - Const (from `../mod/Const`)
   - Converter (from `../mod/Converter`)
   - ConverterUI (from `../mod/ConverterUI`)
   - MPAK (from `../mod/MPAK`)
   - SUI (from `../mod/SUI`)
 
 EXTERNAL SOURCES:
+  Const:
+    :path: "../mod/Const"
   Converter:
     :path: "../mod/Converter"
   ConverterUI:
@@ -24,11 +29,12 @@ EXTERNAL SOURCES:
     :path: "../mod/SUI"
 
 SPEC CHECKSUMS:
+  Const: f2aceeaf7dca12b882eeb1afa6b2b0aadaf7afc9
   Converter: 9d2df50233f37b1ee51a1b1dfdeb3ae56400ed4d
-  ConverterUI: 581f62f6f2d251de5f30b7e7714773ca998eb751
-  MPAK: 7fc2e250a1bc46544263d5fbe4936de2c5286b10
+  ConverterUI: df5385671e945005e8a046449c5675b9a09fdab0
+  MPAK: 5d6c33580def151a582d58e7b851f70dcb20b5ce
   SUI: 54f52eb52034844063257869bf6e44e520522951
 
-PODFILE CHECKSUM: 3440eaddd508f2ffa7e4184a98584b745b007c6d
+PODFILE CHECKSUM: 25a39dd66d37d1926336270d3e5485fb93c09e2d
 
 COCOAPODS: 1.9.1

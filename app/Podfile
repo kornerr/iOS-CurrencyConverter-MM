@@ -4,6 +4,7 @@ platform :ios, '14.0'
 
 target 'App' do
   use_frameworks!
+  pod 'Const', :path => '../mod/Const'
   pod 'Converter', :path => '../mod/Converter'
   pod 'ConverterUI', :path => '../mod/ConverterUI'
   pod 'MPAK', :path => '../mod/MPAK'
