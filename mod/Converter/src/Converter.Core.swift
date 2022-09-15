@@ -49,7 +49,7 @@ extension Converter.Core {
   private func setupPipes() {
     pipeValue(
       dbg: "amount",
-      vm.$amountSrc.eraseToAnyPublisher(),
+      vm.$amountSrc.removeDuplicates().eraseToAnyPublisher(),
       {
         $0.amount.value = $1
         $0.amount.isRecent = true
@@ -72,6 +72,13 @@ extension Converter.Core {
   private func setupUI() {
     SUI.addSwiftUIViewAsChildVC(swiftUIView: ConverterUI.V(vm), parentVC: ui)
 
+    // Форматируем поле ввода.
+    m.compactMap { $0.shouldResetAmount }
+      .receive(on: DispatchQueue.main)
+      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupU shouldRA: '\(o)'") })
+      .sink { [weak self] v in self?.vm.amountSrc = v }
+      .store(in: &subscriptions)
+      
 /*
     // Отображаем факт загрузки системной инфы.
     m.map { $0.isLoadingSystemInfo }

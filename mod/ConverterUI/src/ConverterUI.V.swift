@@ -35,6 +35,9 @@ extension ConverterUI.V {
         .keyboardType(.decimalPad)
         .font(.system(size: 60, weight: .thin))
         .foregroundColor(Const.purple)
+        .minimumScaleFactor(1.0/3.0)
+        .lineLimit(1)
+        .frame(height: vm.amountHeight)
     }
       .background(Color.white)
   }
