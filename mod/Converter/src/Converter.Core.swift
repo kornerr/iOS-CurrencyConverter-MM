@@ -70,12 +70,15 @@ extension Converter.Core {
   }
 
   private func setupUI() {
+    // Вставляем интерфейс на SwiftUI в VC.
     SUI.addSwiftUIViewAsChildVC(swiftUIView: ConverterUI.V(vm), parentVC: ui)
+    // Включаем кнопку очистки на всех полях ввода,
+    // т.к. в SwiftUI нельзя эту кнопку включить.
+    UITextField.appearance().clearButtonMode = .whileEditing
 
     // Форматируем поле ввода.
     m.compactMap { $0.shouldResetAmount }
       .receive(on: DispatchQueue.main)
-      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupU shouldRA: '\(o)'") })
       .sink { [weak self] v in self?.vm.amountSrc = v }
       .store(in: &subscriptions)
       
