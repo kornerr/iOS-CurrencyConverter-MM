@@ -13,18 +13,23 @@ extension Converter.Core {
 }
 
 extension Converter.Core.Model {
-  // Форматируем поле ввода, если оно только что изменилось, следующим образом:
-  // 1. убрать пробелы по краям
-  // 2. оставить лишь цифры и точку
-  // 3. заменить запятую на точку
+  // Форматируем поле ввода, если оно только что изменилось:
+  // 1. оставляем лишь точки, запятые и цифры
+  // 2. заменяем запятые на точки
+  // 3. оставляем лишь первую точку
   public var shouldResetAmount: String? {
     guard amount.isRecent else { return nil }
     var av = amount.value
-    av = av.trimmingCharacters(in: .whitespaces)
+    // 1.
     let allowed: Set<Character> = [".", ",", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    /**/print("ИГР ConverterCM.shouldRA-1: '\(av)'")
     av = String(av.filter { allowed.contains($0) })
-    /**/print("ИГР ConverterCM.shouldRA-2: '\(av)'")
+    // 2.
+    av = av.replacingOccurrences(of: ",", with: ".")
+    // 3.
+    if let id = av.firstIndex(of: ".") {
+      av = av.replacingOccurrences(of: ".", with: "")
+      av.insert(".", at: id)
+    }
     if av != amount.value {
       return av
     }
