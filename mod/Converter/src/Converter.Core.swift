@@ -57,16 +57,12 @@ extension Converter.Core {
       { m, _ in m.amount.isRecent = false }
     )
 
-    /*
-    pipeValue(
-      dbg: "isLSI",
-      Publishers.Merge(
-        isLoadingSystemInfo.map { _ in true },
-        resultSystemInfo.map { _ in false }
-      ).eraseToAnyPublisher(),
-      { $0.isLoadingSystemInfo = $1 }
+    pipe(
+      dbg: "start",
+      Just(()).eraseToAnyPublisher(),
+      { $0.perform.start = true },
+      { $0.perform.start = false }
     )
-    */
   }
 
   private func setupUI() {
@@ -81,14 +77,11 @@ extension Converter.Core {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.amountSrc = v }
       .store(in: &subscriptions)
-      
-/*
-    // Отображаем факт загрузки системной инфы.
-    m.map { $0.isLoadingSystemInfo }
-      .removeDuplicates()
+
+    // Задаём валюту-источник.
+    m.compactMap { $0.shouldResetCurrencySrc }
       .receive(on: DispatchQueue.main)
-      .sink { [weak self] v in self?.vm.isLoadingSystemInfo = v }
+      .sink { [weak self] v in self?.vm.currencySrc = v }
       .store(in: &subscriptions)
-      */
   }
 }
