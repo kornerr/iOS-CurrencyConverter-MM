@@ -28,7 +28,7 @@ extension ConverterUI {
 
 extension ConverterUI.V {
   private var amountSrc: some View {
-    HStack {
+    HStack(spacing: 0) {
       Spacer()
         .frame(width: 5)
       TextField("", text: $vm.amountSrc)
@@ -38,6 +38,12 @@ extension ConverterUI.V {
         .minimumScaleFactor(1.0/3.0)
         .lineLimit(1)
         .frame(height: vm.amountHeight)
+      Button(action: { vm.selectCurrencySrc.send() }) {
+        Text(vm.currencySrc)
+          .font(.system(size: 30))
+          .foregroundColor(Const.purple)
+          .padding(.horizontal, 5)
+      }
     }
       .background(Color.white)
   }
