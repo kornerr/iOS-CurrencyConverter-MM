@@ -18,6 +18,7 @@ extension ConverterUI {
         VStack(spacing: 0) {
           amountSrc
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
+          amountDst
           Spacer()
         }
       }
@@ -27,6 +28,26 @@ extension ConverterUI {
 }
 
 extension ConverterUI.V {
+  private var amountDst: some View {
+    HStack(spacing: 0) {
+      Spacer()
+        .frame(width: 8)
+      Text(vm.amountDst)
+        .font(.system(size: 60, weight: .thin))
+        .foregroundColor(.white)
+        .minimumScaleFactor(1.0/3.0)
+        .lineLimit(1)
+        .frame(width: .infinity, height: vm.amountHeight, alignment: .center)
+        //.frame(height: vm.amountHeight)
+      Button(action: { vm.selectCurrencyDst.send() }) {
+        Text(vm.currencyDst)
+          .font(.system(size: 30))
+          .foregroundColor(.white)
+          .padding(.horizontal, 5)
+      }
+    }
+  }
+
   private var amountSrc: some View {
     HStack(spacing: 0) {
       Spacer()
