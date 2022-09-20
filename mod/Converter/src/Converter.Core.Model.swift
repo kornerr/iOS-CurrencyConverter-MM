@@ -36,6 +36,15 @@ extension Converter.Core.Model {
     return nil
   }
 
+  // Задаём валюту-назначение, если:
+  // 1. только что произошёл запуск приложения
+  public var shouldResetCurrencyDst: String? {
+    if perform.start {
+      return "EUR"
+    }
+    return nil
+  }
+
   // Задаём значение валюты-источника, если:
   // 1. только что произошёл запуск приложения
   public var shouldResetCurrencySrc: String? {

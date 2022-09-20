@@ -4,7 +4,7 @@ extension ConverterUI {
   public final class VM: ObservableObject {
     @Published public var amountDst = "0.Z"
     @Published public var amountSrc = ""
-    @Published public var currencyDst = "dSt"
+    @Published public var currencyDst = ""
     @Published public var currencySrc = ""
 
     public let amountHeight: CGFloat

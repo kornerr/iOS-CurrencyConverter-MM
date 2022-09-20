@@ -19,6 +19,7 @@ extension ConverterUI {
           amountSrc
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
           amountDst
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
           Spacer()
         }
       }
@@ -37,8 +38,8 @@ extension ConverterUI.V {
         .foregroundColor(.white)
         .minimumScaleFactor(1.0/3.0)
         .lineLimit(1)
-        .frame(width: .infinity, height: vm.amountHeight, alignment: .center)
-        //.frame(height: vm.amountHeight)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: vm.amountHeight)
       Button(action: { vm.selectCurrencyDst.send() }) {
         Text(vm.currencyDst)
           .font(.system(size: 30))

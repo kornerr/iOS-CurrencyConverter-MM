@@ -83,5 +83,11 @@ extension Converter.Core {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.currencySrc = v }
       .store(in: &subscriptions)
+
+    // Задаём валюту-назначение.
+    m.compactMap { $0.shouldResetCurrencyDst }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.currencyDst = v }
+      .store(in: &subscriptions)
   }
 }
