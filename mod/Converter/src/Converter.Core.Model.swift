@@ -14,12 +14,37 @@ extension Converter.Core {
     public var amount = MPAK.Recent("")
     public var currency = Currency()
     public var perform = Perform()
+    public var rates = MPAK.Recent<Converter.Rates?>(nil)
   }
 }
 
 // MARK: - Публичная интерпретация сырых данных
 
 extension Converter.Core.Model {
+  // Следует обновить курсы валют, если:
+  // 1. только что произошёл запуск приложения
+  public var shouldRefreshExchangeRates: URL? {
+    if
+      perform.start,
+      let url = URL(string: "https://open.er-api.com/v6/latest/USD")
+    {
+      return url
+    }
+    return nil
+  }
+
+  // Сообщаем об ошибке, если:
+  // 1. не удалось загрузить курсы валют
+  public var shouldReportError: String? {
+    if
+      rates.isRecent,
+      rates.value == nil
+    {
+      return "Could not load exchange rates"
+    }
+    return nil
+  }
+
   // Задаём значение поля с суммой для конвертации, если:
   // 1. только что произошёл запуск приложения
   // 2. пользователь изменил значение в поле

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
-s.name                  = 'Converter'
-s.version               = '2022.09.07'
+s.name                  = 'Alert'
+s.version               = '2022.09.21'
 s.license               = 'ZLIB'
 s.summary               = 'MM'
 s.homepage              = 'https://github.com/kornerr/iOS-CurrencyConverter-MM'
@@ -10,9 +10,5 @@ s.source                = { :git => 'https://fake.com/FAKE.git', :tag => s.versi
 s.source_files          = 'src/*.swift'
 s.swift_version         = '5.2'
 s.ios.deployment_target = '14.0'
-s.dependency 'Alert'
-s.dependency 'ConverterUI'
-s.dependency 'MPAK'
-s.dependency 'SUI'
 
 end
