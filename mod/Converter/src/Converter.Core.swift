@@ -54,6 +54,26 @@ extension Converter.Core {
     )
 
     pipeValue(
+      dbg: "currencyD",
+      vm.$currencyDst.removeDuplicates().eraseToAnyPublisher(),
+      {
+        $0.currency.dst.value = $1
+        $0.currency.dst.isRecent = true
+      },
+      { m, _ in m.currency.dst.isRecent = false }
+    )
+
+    pipeValue(
+      dbg: "currencyS",
+      vm.$currencySrc.removeDuplicates().eraseToAnyPublisher(),
+      {
+        $0.currency.src.value = $1
+        $0.currency.src.isRecent = true
+      },
+      { m, _ in m.currency.src.isRecent = false }
+    )
+
+    pipeValue(
       dbg: "resultER",
       resultExchangeRates.eraseToAnyPublisher(),
       {
@@ -79,9 +99,16 @@ extension Converter.Core {
     UITextField.appearance().clearButtonMode = .whileEditing
 
     // Форматируем поле ввода.
-    m.compactMap { $0.shouldResetAmount }
+    m.compactMap { $0.shouldResetAmountSrc }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.amountSrc = v }
+      .store(in: &subscriptions)
+
+    // Вычисляем результат.
+    m.compactMap { $0.shouldResetAmountDst }
+      .receive(on: DispatchQueue.main)
+      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupU shouldRAD: '\(o)'") })
+      .sink { [weak self] v in self?.vm.amountDst = v }
       .store(in: &subscriptions)
 
     // Задаём валюту-источник.

@@ -2,7 +2,7 @@ import Combine
 
 extension ConverterUI {
   public final class VM: ObservableObject {
-    @Published public var amountDst = "0.Z"
+    @Published public var amountDst = ""
     @Published public var amountSrc = ""
     @Published public var currencyDst = ""
     @Published public var currencySrc = ""

@@ -45,10 +45,50 @@ extension Converter.Core.Model {
     return nil
   }
 
+  // Вычисляем значение поля назначения, если:
+  // 1. только что произошёл запуск приложения
+  // 2.  ОПИСАТЬ ВСЕ ПУНКТЫ пользователь изменил сумму для конвертации или обновился курс валют
+  public var shouldResetAmountDst: String? {
+    if perform.start {
+      return "0"
+    }
+    if
+      (
+        amount.isRecent ||
+        rates.isRecent ||
+        currency.src.isRecent ||
+        currency.dst.isRecent
+      ),
+      let money = Double(amount.value),
+      let dstC = currency.dst.value,
+      let srcC = currency.src.value,
+      let dstR = rates.value?.rates[dstC],
+      let srcR = rates.value?.rates[srcC]
+    {
+      return String(money / srcR * dstR)
+    }
+
+    if
+      (
+        amount.isRecent ||
+        rates.isRecent ||
+        currency.src.isRecent ||
+        currency.dst.isRecent
+      )
+    {
+      let money = Double(amount.value)
+      print("ИГР ConverterCM.shouldRAD money/dstC/srcC/dstR/srcR: '\(money)'/'\(currency.dst.value)'/'\(currency.src.value)'/")//'\(rates.value?.rates[dstC])'/'\(rates.value?.rates[srcC])'")
+
+      return "some"
+    }
+
+    return nil
+  }
+
   // Задаём значение поля с суммой для конвертации, если:
   // 1. только что произошёл запуск приложения
   // 2. пользователь изменил значение в поле
-  public var shouldResetAmount: String? {
+  public var shouldResetAmountSrc: String? {
     if perform.start {
       return "100"
     }
