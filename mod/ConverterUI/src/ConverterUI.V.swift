@@ -5,8 +5,6 @@ import SwiftUI
 extension ConverterUI {
   public struct V: View {
     @ObservedObject private var vm: VM
-    @State private var selectedCurrencySrcId = 0
-    @State private var selectedCurrencyDstId = 0
 
     public init(_ vm: VM) {
       self.vm = vm
@@ -74,7 +72,7 @@ extension ConverterUI.V {
   }
   
   private var pickerSrc: some View {
-    Picker(selection: $selectedCurrencySrcId, label: Text("www").padding(20)) {
+    Picker(selection: $vm.selectedCurrencySrcId, label: Text("www").padding(20)) {
       ForEach(0..<vm.currencies.count, id: \.self) {
         Text(vm.currencies[$0])
           .font(.system(size: 30))

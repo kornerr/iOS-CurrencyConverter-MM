@@ -3,8 +3,8 @@ import MPAK
 extension Converter.Core {
   public struct Model {
     public struct Currency {
-      public var dst = MPAK.Recent<String?>(nil)
-      public var src = MPAK.Recent<String?>(nil)
+      public var isoCode = MPAK.Recent<String?>(nil)
+      public var isoCodeId = MPAK.Recent(0)
     }
 
     public struct Perform {
@@ -12,9 +12,10 @@ extension Converter.Core {
     }
 
     public var amount = MPAK.Recent("")
-    public var currency = Currency()
+    public var dst = Currency()
     public var perform = Perform()
     public var rates = MPAK.Recent<Converter.Rates?>(nil)
+    public var src = Currency()
   }
 }
 
@@ -53,16 +54,16 @@ extension Converter.Core.Model {
       perform.start ||
       amount.isRecent ||
       rates.isRecent ||
-      currency.src.isRecent ||
-      currency.dst.isRecent
+      src.isoCode.isRecent ||
+      dst.isoCode.isRecent
     else {
       return nil
     }
 
     if
       let money = Double(amount.value),
-      let dstC = currency.dst.value,
-      let srcC = currency.src.value,
+      let dstC = dst.isoCode.value,
+      let srcC = src.isoCode.value,
       let dstR = rates.value?.rates[dstC],
       let srcR = rates.value?.rates[srcC]
     {

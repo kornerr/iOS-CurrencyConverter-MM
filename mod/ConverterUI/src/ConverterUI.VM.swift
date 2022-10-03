@@ -7,6 +7,8 @@ extension ConverterUI {
     @Published public var currencies = [String]()
     @Published public var currencyDst = ""
     @Published public var currencySrc = ""
+    @Published public var selectedCurrencyDstId = 0
+    @Published public var selectedCurrencySrcId = 0
 
     public let amountHeight: CGFloat
     public let selectCurrencyDst = PassthroughSubject<Void, Never>()

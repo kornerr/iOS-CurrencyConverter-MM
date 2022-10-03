@@ -57,20 +57,20 @@ extension Converter.Core {
       dbg: "currencyD",
       vm.$currencyDst.removeDuplicates().eraseToAnyPublisher(),
       {
-        $0.currency.dst.value = $1
-        $0.currency.dst.isRecent = true
+        $0.dst.isoCode.value = $1
+        $0.dst.isoCode.isRecent = true
       },
-      { m, _ in m.currency.dst.isRecent = false }
+      { m, _ in m.dst.isoCode.isRecent = false }
     )
 
     pipeValue(
       dbg: "currencyS",
       vm.$currencySrc.removeDuplicates().eraseToAnyPublisher(),
       {
-        $0.currency.src.value = $1
-        $0.currency.src.isRecent = true
+        $0.src.isoCode.value = $1
+        $0.src.isoCode.isRecent = true
       },
-      { m, _ in m.currency.src.isRecent = false }
+      { m, _ in m.src.isoCode.isRecent = false }
     )
 
     pipeValue(
@@ -81,6 +81,16 @@ extension Converter.Core {
         $0.rates.isRecent = true
       },
       { m, _ in m.rates.isRecent = false }
+    )
+
+    pipeValue(
+      dbg: "selectedCSI",
+      vm.$selectedCurrencySrcId.eraseToAnyPublisher(),
+      {
+        $0.src.isoCodeId.value = $1
+        $0.src.isoCodeId.isRecent = true
+      },
+      { m, _ in m.src.isoCodeId.isRecent = false }
     )
 
     pipe(
