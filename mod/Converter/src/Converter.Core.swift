@@ -111,6 +111,12 @@ extension Converter.Core {
       .sink { [weak self] v in self?.vm.amountDst = v }
       .store(in: &subscriptions)
 
+    // Задаём список валют.
+    m.compactMap { $0.shouldResetCurrencies }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.currencies = v }
+      .store(in: &subscriptions)
+
     // Задаём валюту-источник.
     m.compactMap { $0.shouldResetCurrencySrc }
       .receive(on: DispatchQueue.main)

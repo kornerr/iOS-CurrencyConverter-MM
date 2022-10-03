@@ -4,6 +4,7 @@ extension ConverterUI {
   public final class VM: ObservableObject {
     @Published public var amountDst = ""
     @Published public var amountSrc = ""
+    @Published public var currencies = [String]()
     @Published public var currencyDst = ""
     @Published public var currencySrc = ""
 

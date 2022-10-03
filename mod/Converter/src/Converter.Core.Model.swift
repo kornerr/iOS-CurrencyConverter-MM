@@ -49,40 +49,36 @@ extension Converter.Core.Model {
   // 1. только что произошёл запуск приложения
   // 2.  ОПИСАТЬ ВСЕ ПУНКТЫ пользователь изменил сумму для конвертации или обновился курс валют
   public var shouldResetAmountDst: String? {
-    if perform.start {
-      return "0"
+    guard
+      perform.start ||
+      amount.isRecent ||
+      rates.isRecent ||
+      currency.src.isRecent ||
+      currency.dst.isRecent
+    else {
+      return nil
     }
+
     if
-      (
-        amount.isRecent ||
-        rates.isRecent ||
-        currency.src.isRecent ||
-        currency.dst.isRecent
-      ),
       let money = Double(amount.value),
       let dstC = currency.dst.value,
       let srcC = currency.src.value,
       let dstR = rates.value?.rates[dstC],
       let srcR = rates.value?.rates[srcC]
     {
-      return String(money / srcR * dstR)
+      let conversion = money / srcR * dstR
+      let result = String(conversion)
+      let parts = result.components(separatedBy: ".")
+      guard
+        let integer = parts.first,
+        let fraction = parts.last
+      else {
+        return nil
+      }
+      return integer + "." + fraction.prefix(2)
     }
 
-    if
-      (
-        amount.isRecent ||
-        rates.isRecent ||
-        currency.src.isRecent ||
-        currency.dst.isRecent
-      )
-    {
-      let money = Double(amount.value)
-      print("ИГР ConverterCM.shouldRAD money/dstC/srcC/dstR/srcR: '\(money)'/'\(currency.dst.value)'/'\(currency.src.value)'/")//'\(rates.value?.rates[dstC])'/'\(rates.value?.rates[srcC])'")
-
-      return "some"
-    }
-
-    return nil
+    return "0.0"
   }
 
   // Задаём значение поля с суммой для конвертации, если:
@@ -99,6 +95,18 @@ extension Converter.Core.Model {
       }
     }
     return nil
+  }
+
+  // Задаём упорядоченный по алфавиту список валют, если:
+  // обновился список валют.
+  public var shouldResetCurrencies: [String]? {
+    guard
+      rates.isRecent,
+      let r = rates.value
+    else {
+      return nil
+    }
+    return r.rates.keys.sorted()
   }
 
   // Задаём валюту-назначение, если:

@@ -4,7 +4,9 @@ import SwiftUI
 
 extension ConverterUI {
   public struct V: View {
-    @ObservedObject var vm: VM
+    @ObservedObject private var vm: VM
+    @State private var selectedCurrencySrcId = 0
+    @State private var selectedCurrencyDstId = 0
 
     public init(_ vm: VM) {
       self.vm = vm
@@ -18,6 +20,7 @@ extension ConverterUI {
         VStack(spacing: 0) {
           amountSrc
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
+          pickerSrc
           amountDst
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
           Spacer()
@@ -67,6 +70,17 @@ extension ConverterUI.V {
           .padding(.horizontal, 5)
       }
     }
-      .background(Color.white)
+    .background(Color.white)
+  }
+  
+  private var pickerSrc: some View {
+    Picker(selection: $selectedCurrencySrcId, label: Text("www").padding(20)) {
+      ForEach(0..<vm.currencies.count, id: \.self) {
+        Text(vm.currencies[$0])
+          .font(.system(size: 30))
+          .foregroundColor(Color.white)
+      }
+    }
+    .pickerStyle(WheelPickerStyle())
   }
 }
