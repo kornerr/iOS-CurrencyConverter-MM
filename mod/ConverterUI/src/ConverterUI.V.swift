@@ -18,7 +18,9 @@ extension ConverterUI {
         VStack(spacing: 0) {
           amountSrc
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
-          pickerSrc
+          if vm.isPickerSrcVisible {
+            pickerSrc
+          }
           amountDst
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
           Spacer()
