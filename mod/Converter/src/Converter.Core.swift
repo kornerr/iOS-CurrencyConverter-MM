@@ -74,6 +74,26 @@ extension Converter.Core {
     )
 
     pipeValue(
+      dbg: "isPDV",
+      vm.$isPickerDstVisible.eraseToAnyPublisher(),
+      {
+        $0.dst.isPickerVisible.value = $1
+        $0.dst.isPickerVisible.isRecent = true
+      },
+      { m, _ in m.dst.isPickerVisible.isRecent = false }
+    )
+
+    pipeValue(
+      dbg: "isPSV",
+      vm.$isPickerSrcVisible.eraseToAnyPublisher(),
+      {
+        $0.src.isPickerVisible.value = $1
+        $0.src.isPickerVisible.isRecent = true
+      },
+      { m, _ in m.src.isPickerVisible.isRecent = false }
+    )
+
+    pipeValue(
       dbg: "resultER",
       resultExchangeRates.eraseToAnyPublisher(),
       {
@@ -157,6 +177,18 @@ extension Converter.Core {
     m.compactMap { $0.shouldReportError }
       .receive(on: DispatchQueue.main)
       .sink { Self.reportError($0) }
+      .store(in: &subscriptions)
+
+    // Задаём видимость списка валют для источника.
+    m.compactMap { $0.shouldResetPickerSrcVisibility }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.isPickerSrcVisible = v }
+      .store(in: &subscriptions)
+
+    // Задаём видимость списка валют для назначения.
+    m.compactMap { $0.shouldResetPickerDstVisibility }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.isPickerDstVisible = v }
       .store(in: &subscriptions)
   }
 }

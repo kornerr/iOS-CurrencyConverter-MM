@@ -23,6 +23,9 @@ extension ConverterUI {
           }
           amountDst
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+          if vm.isPickerDstVisible {
+            pickerDst
+          }
           Spacer()
         }
       }
@@ -73,6 +76,17 @@ extension ConverterUI.V {
     .background(Color.white)
   }
   
+  private var pickerDst: some View {
+    Picker(selection: $vm.selectedCurrencyDstId, label: Text("www").padding(20)) {
+      ForEach(0..<vm.currencies.count, id: \.self) {
+        Text(vm.currencies[$0])
+          .font(.system(size: 30))
+          .foregroundColor(Color.white)
+      }
+    }
+    .pickerStyle(WheelPickerStyle())
+  }
+
   private var pickerSrc: some View {
     Picker(selection: $vm.selectedCurrencySrcId, label: Text("www").padding(20)) {
       ForEach(0..<vm.currencies.count, id: \.self) {

@@ -10,6 +10,7 @@ extension Converter.Core {
     public struct Currency {
       public var isoCode = MPAK.Recent<String?>(nil)
       public var isoCodeId = MPAK.Recent(0)
+      public var isPickerVisible = MPAK.Recent(false)
     }
 
     public struct Perform {
@@ -130,6 +131,22 @@ extension Converter.Core.Model {
   public var shouldResetCurrencySrc: String? {
     if perform.start {
       return "USD"
+    }
+    return nil
+  }
+
+  // НАДО
+  public var shouldResetPickerDstVisibility: Bool? {
+    if buttons.isDstPressed {
+      return !dst.isPickerVisible.value
+    }
+    return nil
+  }
+
+  // НАДО
+  public var shouldResetPickerSrcVisibility: Bool? {
+    if buttons.isSrcPressed {
+      return !src.isPickerVisible.value
     }
     return nil
   }
