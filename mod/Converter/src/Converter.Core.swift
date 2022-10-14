@@ -187,10 +187,22 @@ extension Converter.Core {
       .sink { [weak self] v in self?.vm.currencySrc = v }
       .store(in: &subscriptions)
 
+    // Задаём первоначальную установку валюты-источника.
+    m.compactMap { $0.shouldResetCurrencySrcId }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.selectedCurrencySrcId = v }
+      .store(in: &subscriptions)
+
     // Задаём валюту-назначение.
     m.compactMap { $0.shouldResetCurrencyDst }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.currencyDst = v }
+      .store(in: &subscriptions)
+
+    // Задаём первоначальную установку валюты-назначения.
+    m.compactMap { $0.shouldResetCurrencyDstId }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.selectedCurrencyDstId = v }
       .store(in: &subscriptions)
 
     // Сообщаем об ошибке.

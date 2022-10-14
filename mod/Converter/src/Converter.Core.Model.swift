@@ -118,19 +118,29 @@ extension Converter.Core.Model {
     return r.rates.keys.sorted()
   }
 
+  // НАДО
+  public var shouldResetCurrencyDstId: Int? {
+    if
+      currencies.isRecent,
+      let isoCodes = currencies.value
+    {
+      return isoCodes.firstIndex(of: "EUR")
+    }
+    return nil
+  }
+
   // Задаём валюту-назначение, если:
-  // 1. только что произошёл запуск приложения
+  // 1. УБРАТЬ только что произошёл запуск приложения
   // 2. НАДО
   public var shouldResetCurrencyDst: String? {
+      /*
     if perform.start {
       return "EUR"
     }
+    */
     
     if
-      (
-        currencies.isRecent ||
-        dst.isoCodeId.isRecent
-      ),
+      dst.isoCodeId.isRecent,
       let currs = currencies.value,
       dst.isoCodeId.value < currs.count
     {
@@ -141,24 +151,34 @@ extension Converter.Core.Model {
   }
 
   // Задаём значение валюты-источника, если:
-  // 1. только что произошёл запуск приложения
+  // 1. УБРАТЬ только что произошёл запуск приложения
   // 2. НАДО
   public var shouldResetCurrencySrc: String? {
+      /*
     if perform.start {
       return "USD"
     }
+    */
 
     if
-      (
-        currencies.isRecent ||
-        src.isoCodeId.isRecent
-      ),
+      src.isoCodeId.isRecent,
       let currs = currencies.value,
       src.isoCodeId.value < currs.count
     {
       return currs[src.isoCodeId.value]
     }
 
+    return nil
+  }
+
+  // НАДО
+  public var shouldResetCurrencySrcId: Int? {
+    if
+      currencies.isRecent,
+      let isoCodes = currencies.value
+    {
+      return isoCodes.firstIndex(of: "USD")
+    }
     return nil
   }
 
