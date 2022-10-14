@@ -19,6 +19,7 @@ extension Converter.Core {
 
     public var amount = MPAK.Recent("")
     public var buttons = Buttons()
+    public var currencies = MPAK.Recent<[String]?>(nil)
     public var dst = Currency()
     public var perform = Perform()
     public var rates = MPAK.Recent<Converter.Rates?>(nil)
@@ -128,10 +129,23 @@ extension Converter.Core.Model {
 
   // Задаём значение валюты-источника, если:
   // 1. только что произошёл запуск приложения
+  // 2. НАДО
   public var shouldResetCurrencySrc: String? {
     if perform.start {
       return "USD"
     }
+
+    if
+      (
+        currencies.isRecent ||
+        src.isoCodeId.isRecent
+      ),
+      let currs = currencies.value,
+      src.isoCodeId.value < currs.count
+    {
+      return currs[src.isoCodeId.value]
+    }
+
     return nil
   }
 
@@ -140,6 +154,18 @@ extension Converter.Core.Model {
     if buttons.isDstPressed {
       return !dst.isPickerVisible.value
     }
+
+    if
+      (
+        currencies.isRecent ||
+        dst.isoCodeId.isRecent
+      ),
+      let currs = currencies.value,
+      dst.isoCodeId.value < currs.count
+    {
+      return currs[dst.isoCodeId.value]
+    }
+
     return nil
   }
 

@@ -54,6 +54,16 @@ extension Converter.Core {
     )
 
     pipeValue(
+      dbg: "currencies",
+      vm.$currencies.eraseToAnyPublisher(),
+      {
+        $0.currencies.value = $1
+        $0.currencies.isRecent = true
+      },
+      { m, _ in m.currencies.isRecent = false }
+    )
+
+    pipeValue(
       dbg: "currencyD",
       vm.$currencyDst.removeDuplicates().eraseToAnyPublisher(),
       {
