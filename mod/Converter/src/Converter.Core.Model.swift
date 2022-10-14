@@ -2,6 +2,11 @@ import MPAK
 
 extension Converter.Core {
   public struct Model {
+    public struct Buttons {
+      public var isDstPressed = false
+      public var isSrcPressed = false
+    }
+
     public struct Currency {
       public var isoCode = MPAK.Recent<String?>(nil)
       public var isoCodeId = MPAK.Recent(0)
@@ -12,6 +17,7 @@ extension Converter.Core {
     }
 
     public var amount = MPAK.Recent("")
+    public var buttons = Buttons()
     public var dst = Currency()
     public var perform = Perform()
     public var rates = MPAK.Recent<Converter.Rates?>(nil)

@@ -7,8 +7,8 @@ extension ConverterUI {
     @Published public var currencies = [String]()
     @Published public var currencyDst = ""
     @Published public var currencySrc = ""
-    @Published public var isPickerSrcVisible = false
     @Published public var isPickerDstVisible = false
+    @Published public var isPickerSrcVisible = false
     @Published public var selectedCurrencyDstId = 0
     @Published public var selectedCurrencySrcId = 0
 

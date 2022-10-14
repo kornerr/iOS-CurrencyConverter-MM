@@ -83,6 +83,20 @@ extension Converter.Core {
       { m, _ in m.rates.isRecent = false }
     )
 
+    pipe(
+      dbg: "selectCD",
+      vm.selectCurrencyDst.eraseToAnyPublisher(),
+      { $0.buttons.isDstPressed = true },
+      { $0.buttons.isDstPressed = false }
+    )
+
+    pipe(
+      dbg: "selectCS",
+      vm.selectCurrencySrc.eraseToAnyPublisher(),
+      { $0.buttons.isSrcPressed = true },
+      { $0.buttons.isSrcPressed = false }
+    )
+
     pipeValue(
       dbg: "selectedCSI",
       vm.$selectedCurrencySrcId.eraseToAnyPublisher(),
