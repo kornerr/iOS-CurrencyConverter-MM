@@ -128,6 +128,16 @@ extension Converter.Core {
     )
 
     pipeValue(
+      dbg: "selectedCDI",
+      vm.$selectedCurrencyDstId.eraseToAnyPublisher(),
+      {
+        $0.dst.isoCodeId.value = $1
+        $0.dst.isoCodeId.isRecent = true
+      },
+      { m, _ in m.dst.isoCodeId.isRecent = false }
+    )
+
+    pipeValue(
       dbg: "selectedCSI",
       vm.$selectedCurrencySrcId.eraseToAnyPublisher(),
       {

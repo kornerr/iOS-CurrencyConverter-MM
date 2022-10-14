@@ -120,10 +120,23 @@ extension Converter.Core.Model {
 
   // Задаём валюту-назначение, если:
   // 1. только что произошёл запуск приложения
+  // 2. НАДО
   public var shouldResetCurrencyDst: String? {
     if perform.start {
       return "EUR"
     }
+    
+    if
+      (
+        currencies.isRecent ||
+        dst.isoCodeId.isRecent
+      ),
+      let currs = currencies.value,
+      dst.isoCodeId.value < currs.count
+    {
+      return currs[dst.isoCodeId.value]
+    }
+    
     return nil
   }
 
@@ -154,18 +167,6 @@ extension Converter.Core.Model {
     if buttons.isDstPressed {
       return !dst.isPickerVisible.value
     }
-
-    if
-      (
-        currencies.isRecent ||
-        dst.isoCodeId.isRecent
-      ),
-      let currs = currencies.value,
-      dst.isoCodeId.value < currs.count
-    {
-      return currs[dst.isoCodeId.value]
-    }
-
     return nil
   }
 
