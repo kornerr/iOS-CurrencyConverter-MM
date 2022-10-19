@@ -9,12 +9,14 @@ extension ConverterUI {
     @Published public var currencySrc = ""
     @Published public var isPickerDstVisible = false
     @Published public var isPickerSrcVisible = false
+    @Published public var rate = ""
     @Published public var selectedCurrencyDstId = 0
     @Published public var selectedCurrencySrcId = 0
 
     public let amountHeight: CGFloat
     public let selectCurrencyDst = PassthroughSubject<Void, Never>()
     public let selectCurrencySrc = PassthroughSubject<Void, Never>()
+    public let showInfo = PassthroughSubject<Void, Never>()
     public let signIn = PassthroughSubject<Void, Never>()
 
     public init() {

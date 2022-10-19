@@ -222,6 +222,12 @@ extension Converter.Core {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.isPickerDstVisible = v }
       .store(in: &subscriptions)
+
+    // Задаём справочный курс единицы валюты.
+    m.compactMap { $0.shouldResetSingleRate }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.rate = v }
+      .store(in: &subscriptions)
   }
 }
 

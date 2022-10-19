@@ -26,6 +26,10 @@ extension ConverterUI {
           if vm.isPickerDstVisible {
             pickerDst
           }
+          ZStack {
+            rate
+            info
+          }
           Spacer()
         }
       }
@@ -75,7 +79,20 @@ extension ConverterUI.V {
     }
     .background(Color.white)
   }
-  
+
+  private var info: some View {
+    HStack {
+      Spacer()
+      Button(action: { vm.showInfo.send() }) {
+        Image(systemName: "info.circle")
+          .font(.system(size: 23))
+          .foregroundColor(Const.purple)
+          .padding(.horizontal, 2)
+      }
+        //.buttonStyle(BorderlessButtonStyle())
+    }
+  }
+
   private var pickerDst: some View {
     Picker(selection: $vm.selectedCurrencyDstId, label: Text("www").padding(20)) {
       ForEach(0..<vm.currencies.count, id: \.self) {
@@ -96,5 +113,16 @@ extension ConverterUI.V {
       }
     }
     .pickerStyle(WheelPickerStyle())
+  }
+
+  private var rate: some View {
+    HStack {
+      Text(vm.rate)
+        .font(.system(size: 17))
+        .foregroundColor(Const.purple)
+        .padding(.vertical, 3)
+    }
+      .frame(maxWidth: .infinity)
+      .background(Color.white.opacity(0.5))
   }
 }

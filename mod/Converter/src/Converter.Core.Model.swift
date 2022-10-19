@@ -56,6 +56,11 @@ extension Converter.Core.Model {
 
   // Вычисляем значение поля назначения, если:
   // 1. только что произошёл запуск приложения
+  // 1. запустили приложение
+  // 2. изменили сумму валюты-источника
+  // 3. загрузили курс
+  // 4. изменили валюту-источник
+  // 5. изменили валюту-назначение
   // 2.  ОПИСАТЬ ВСЕ ПУНКТЫ пользователь изменил сумму для конвертации или обновился курс валют
   public var shouldResetAmountDst: String? {
     guard
@@ -68,26 +73,22 @@ extension Converter.Core.Model {
       return nil
     }
 
-    if
+    guard
       let money = Double(amount.value),
-      let dstC = dst.isoCode.value,
-      let srcC = src.isoCode.value,
-      let dstR = rates.value?.rates[dstC],
-      let srcR = rates.value?.rates[srcC]
-    {
-      let conversion = money / srcR * dstR
-      let result = String(conversion)
-      let parts = result.components(separatedBy: ".")
-      guard
-        let integer = parts.first,
-        let fraction = parts.last
-      else {
-        return nil
-      }
-      return integer + "." + fraction.prefix(2)
+      let conversion = convert(money)
+    else {
+      return "0.0"
     }
 
-    return "0.0"
+    let result = String(conversion)
+    let parts = result.components(separatedBy: ".")
+    guard
+      let integer = parts.first,
+      let fraction = parts.last
+    else {
+      return nil
+    }
+    return integer + "." + fraction.prefix(2)
   }
 
   // Задаём значение поля с суммой для конвертации, если:
@@ -182,7 +183,8 @@ extension Converter.Core.Model {
     return nil
   }
 
-  // НАДО
+  // Следует переключить видимость пикера валюты-назначения, если
+  // нажали на кнопку валюты-назначения.
   public var shouldResetPickerDstVisibility: Bool? {
     if buttons.isDstPressed {
       return !dst.isPickerVisible.value
@@ -190,12 +192,35 @@ extension Converter.Core.Model {
     return nil
   }
 
-  // НАДО
+  // Переключаем видимость пикера валюты-источника, если
+  // нажали на кнопку валюты-источника.
   public var shouldResetPickerSrcVisibility: Bool? {
     if buttons.isSrcPressed {
       return !src.isPickerVisible.value
     }
     return nil
+  }
+
+  // Задаём курс единицы валюты, если (ИЛИ):
+  // 1. запустили приложение
+  // 2. загрузили курс валют
+  // 3. изменили валюту-источник
+  // 4. изменили валюту-назначение
+  public var shouldResetSingleRate: String? {
+    guard
+      (
+        perform.start ||
+        rates.isRecent ||
+        src.isoCode.isRecent ||
+        dst.isoCode.isRecent
+      ),
+      let s = src.isoCode.value,
+      let d = dst.isoCode.value,
+      let conversion = convert(1)
+    else {
+      return nil
+    }
+    return String(format: "1 %@ = %@ %@", s, String(conversion), d)
   }
 }
 
@@ -219,5 +244,19 @@ extension Converter.Core.Model {
       av.insert(".", at: id)
     }
     return av
+  }
+
+  // Преобразуем сумму из валюты-источника в валюту-назначение, если
+  // присутствуют все коэффициенты.
+  private func convert(_ money: Double) -> Double? {
+    if
+      let dstC = dst.isoCode.value,
+      let srcC = src.isoCode.value,
+      let dstR = rates.value?.rates[dstC],
+      let srcR = rates.value?.rates[srcC]
+    {
+      return money / srcR * dstR
+    }
+    return nil
   }
 }
