@@ -1,4 +1,7 @@
 PODS:
+  - About (2022.10.19):
+    - Converter
+    - MPAK
   - Alert (2022.09.21)
   - Const (2022.09.12)
   - Converter (2022.09.07):
@@ -12,6 +15,7 @@ PODS:
   - SUI (2022.09.08)
 
 DEPENDENCIES:
+  - About (from `../mod/About`)
   - Alert (from `../mod/Alert`)
   - Const (from `../mod/Const`)
   - Converter (from `../mod/Converter`)
@@ -20,6 +24,8 @@ DEPENDENCIES:
   - SUI (from `../mod/SUI`)
 
 EXTERNAL SOURCES:
+  About:
+    :path: "../mod/About"
   Alert:
     :path: "../mod/Alert"
   Const:
@@ -34,6 +40,7 @@ EXTERNAL SOURCES:
     :path: "../mod/SUI"
 
 SPEC CHECKSUMS:
+  About: 23146a2f5ce120e747e6df70e2058fc9d8771df9
   Alert: 903059e6559866c60bd588dfdba23b83594cb42d
   Const: f2aceeaf7dca12b882eeb1afa6b2b0aadaf7afc9
   Converter: 4f808228b8fb5e6773bc53cd6fd6eb846cb519e2
@@ -41,6 +48,6 @@ SPEC CHECKSUMS:
   MPAK: 5d6c33580def151a582d58e7b851f70dcb20b5ce
   SUI: 54f52eb52034844063257869bf6e44e520522951
 
-PODFILE CHECKSUM: 248319b240e701b5df37b3ac60abe7b13e970160
+PODFILE CHECKSUM: cdcbfedae0b6fb1b17cec85247e608dd3c2a9de1
 
 COCOAPODS: 1.9.1

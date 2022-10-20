@@ -22,11 +22,12 @@ extension MPAK {
 
     public func pipe<T>(
       dbg: String? = nil,
+      sub: UnsafeMutablePointer<[AnyCancellable]>? = nil,
       _ node: AnyPublisher<T, Never>,
       _ reaction: @escaping (inout Model) -> Void,
       _ reversion: ((inout Model) -> Void)? = nil
     ) {
-      node
+      let subscription = node
         .sink { [weak self] _ in
           assert(Thread.isMainThread)
           guard let self = self else { return }
@@ -38,7 +39,11 @@ extension MPAK {
           }
           self.m.send(modelCopy)
         }
-        .store(in: &subscriptions)
+      if let sub = sub {
+        sub.pointee.append(subscription)
+      } else {
+        subscriptions.append(subscription)
+      }
     }
 
     public func pipeOptional<T>(
@@ -64,11 +69,12 @@ extension MPAK {
 
     public func pipeValue<T>(
       dbg: String? = nil,
+      sub: UnsafeMutablePointer<[AnyCancellable]>? = nil,
       _ node: AnyPublisher<T, Never>,
       _ reaction: @escaping (inout Model, T) -> Void,
       _ reversion: ((inout Model, T) -> Void)? = nil
     ) {
-      node
+      let subscription = node
         .sink { [weak self] value in
           assert(Thread.isMainThread)
           guard let self = self else { return }
@@ -80,7 +86,11 @@ extension MPAK {
           }
           self.m.send(modelCopy)
         }
-        .store(in: &subscriptions)
+      if let sub = sub {
+        sub.pointee.append(subscription)
+      } else {
+        subscriptions.append(subscription)
+      }
     }
 
     private func dbgLog(_ text: String?) {

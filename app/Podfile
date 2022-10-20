@@ -4,6 +4,7 @@ platform :ios, '14.0'
 
 target 'App' do
   use_frameworks!
+  pod 'About', :path => '../mod/About'
   pod 'Alert', :path => '../mod/Alert'
   pod 'Const', :path => '../mod/Const'
   pod 'Converter', :path => '../mod/Converter'
