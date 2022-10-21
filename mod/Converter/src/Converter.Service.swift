@@ -5,14 +5,16 @@ extension Converter {
   public final class Service {
     private let core: Core
     private let wnd: UIWindow
-    private let worldModel = CurrentValueSubject<Converter.Core.Model?, Never>(nil)
+    private let worldModel: PassthroughSubject<Converter.Core.Model, Never>
 
     public init(
       _ window: UIWindow,
-      _ worldModel: CurrentValueSubject<Converter.Core.Model?, Never>
+      _ worldModel: PassthroughSubject<Converter.Core.Model, Never>
     ) {
-      core = Converter.Core()
       wnd = window
+      self.worldModel = worldModel
+
+      core = Converter.Core()
       core.ui.modalPresentationStyle = .overFullScreen
       wnd.rootViewController?.present(core.ui, animated: false)
     

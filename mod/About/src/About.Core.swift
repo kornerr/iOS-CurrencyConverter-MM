@@ -34,7 +34,7 @@ extension About {
       ctrl.m
         .compactMap { $0.shouldOpenURL }
         .receive(on: DispatchQueue.main)
-        .sink { [weak self] v in world.openURL.send(v) }
+        .sink { v in world.openURL.send(v) }
         .store(in: &subscriptions)
     }
   }
