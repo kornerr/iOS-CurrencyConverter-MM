@@ -148,6 +148,13 @@ extension Converter.Core {
     )
 
     pipe(
+      dbg: "showI",
+      vm.showInfo.eraseToAnyPublisher(),
+      { $0.buttons.isInfoPressed = true },
+      { $0.buttons.isInfoPressed = false }
+    )
+
+    pipe(
       dbg: "start",
       Just(()).eraseToAnyPublisher(),
       { $0.perform.start = true },

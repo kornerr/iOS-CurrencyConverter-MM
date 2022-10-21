@@ -15,11 +15,6 @@ extension About {
 // MARK: - Публичная интерпретация сырых данных
 
 extension About.Model {
-  // НАДО
-  public var shouldHideUI: Bool? {
-    return nil
-  }
-
   // Следует открыть ссылку, если нажали на неё.
   public var shouldOpenURL: URL? {
     return nil
@@ -34,25 +29,24 @@ extension About.Model {
   }
 
   // НАДО
-  public var shouldShowUI: Bool? {
-    return nil
-  }
-
-  // НАДО
   public var shouldStartCore: Bool? {
-      /*
     if
       converterModel.isRecent,
-      converterModel.value?.shouldStartCore != nil
+      let cm = converterModel.value,
+      cm.buttons.isInfoPressed
     {
       return true
     }
-    */
+
     return nil
   }
 
   // НАДО
   public var shouldStopCore: Bool? {
+    if buttons.isExitPressed {
+      return true
+    }
+
     return nil
   }
 }

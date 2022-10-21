@@ -4,6 +4,7 @@ extension Converter.Core {
   public struct Model {
     public struct Buttons {
       public var isDstPressed = false
+      public var isInfoPressed = false
       public var isSrcPressed = false
     }
 

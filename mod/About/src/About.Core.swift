@@ -2,9 +2,14 @@ import Combine
 
 extension About {
   public final class Core {
+    private let dismissal = About.Dismissal()
     //private let vm = About.VM()
     private var subscriptions = [AnyCancellable]()
     private var wnd: UIWindow?
+
+    deinit {
+      hideUI()
+    }
 
     public init(
       _ ctrl: About.Controller,
@@ -12,23 +17,10 @@ extension About {
     ) {
       ctrl.setupCore(
         sub: &subscriptions,
-        Just(()).eraseToAnyPublisher()
+        dismissal.didDismiss.eraseToAnyPublisher()
         //vm.exit.eraseToAnyPublisher()
       )
-
-      // Отображаем окно завершения.
-      ctrl.m
-        .compactMap { $0.shouldShowUI }
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] _ in self?.showUI() }
-        .store(in: &subscriptions)
-
-      // Скрываем окно завершения.
-      ctrl.m
-        .compactMap { $0.shouldHideUI }
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] _ in self?.hideUI() }
-        .store(in: &subscriptions)
+      showUI()
 
       // Открываем URL.
       ctrl.m
@@ -56,6 +48,7 @@ extension About.Core {
 
     // Создаём и отображаем наш UI.
     let ui = UIViewController()
+    ui.presentationController?.delegate = dismissal
 
     /**/ui.view.backgroundColor = .red
 
