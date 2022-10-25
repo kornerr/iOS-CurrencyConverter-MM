@@ -1,9 +1,10 @@
 import Combine
+import SUI
 
 extension About {
   public final class Core {
     private let dismissal = About.Dismissal()
-    //private let vm = About.VM()
+    private let vm = About.VM()
     private var subscriptions = [AnyCancellable]()
     private var wnd: UIWindow?
 
@@ -48,12 +49,10 @@ extension About.Core {
 
     // Создаём и отображаем наш UI.
     let ui = UIViewController()
+    ui.view.backgroundColor = .white
     ui.presentationController?.delegate = dismissal
 
-    /**/ui.view.backgroundColor = .red
-
-    //ui.modalPresentationStyle = .overFullScreen
-    //SUI.addSwiftUIViewAsChildVC(swiftUIView: About.V(vm), parentVC: ui)
+    SUI.addSwiftUIViewAsChildVC(swiftUIView: About.V(vm), parentVC: ui)
     wnd?.rootViewController?.present(ui, animated: true)
   }
 }
