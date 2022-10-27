@@ -264,7 +264,6 @@ extension Converter.Core {
     if let data = try? JSONEncoder().encode(state) {
       UserDefaults.standard.set(data, forKey: "state")
       UserDefaults.standard.synchronize()
-      /**/print("ИГР ConverterC.saveS: '\(state)'")
     }
   }
 }
