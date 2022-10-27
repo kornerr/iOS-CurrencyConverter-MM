@@ -184,6 +184,20 @@ extension Converter.Core.Model {
     return nil
   }
 
+  // НАДО
+  public var shouldResetDiskState: Converter.DiskState? {
+    guard
+      shouldResetAmountDst != nil,
+      let dstC = dst.isoCode.value,
+      let srcC = src.isoCode.value,
+      let rates = rates.value
+    else {
+      return nil
+    }
+
+    return .init(amount: amount.value, dst: dstC, src: srcC, rates: rates)
+  }
+
   // Следует переключить видимость пикера валюты-назначения, если
   // нажали на кнопку валюты-назначения.
   public var shouldResetPickerDstVisibility: Bool? {
