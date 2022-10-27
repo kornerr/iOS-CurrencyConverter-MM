@@ -22,6 +22,7 @@ extension Converter {
       setupPipes()
       setupUI()
       setupNetwork()
+      setupStorage()
     }
   }
 }
@@ -235,6 +236,36 @@ extension Converter.Core {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.rate = v }
       .store(in: &subscriptions)
+  }
+}
+
+// MARK: - Storage
+
+extension Converter.Core {
+  private func setupStorage() {
+    // Сохраняем текущее состояние приложения.
+    m.compactMap { $0.shouldResetDiskState }
+      .receive(on: DispatchQueue.main)
+      .sink { state in Self.saveState(state) }
+      .store(in: &subscriptions)
+  }
+
+  private static func loadState() -> Converter.DiskState? {
+    if
+      let data = UserDefaults.standard.value(forKey: "state") as? Data,
+      let state = try? JSONDecoder().decode(Converter.DiskState.self, from: data)
+    {
+      return state
+    }
+    return nil
+  }
+
+  private static func saveState(_ state: Converter.DiskState) {
+    if let data = try? JSONEncoder().encode(state) {
+      UserDefaults.standard.set(data, forKey: "state")
+      UserDefaults.standard.synchronize()
+      /**/print("ИГР ConverterC.saveS: '\(state)'")
+    }
   }
 }
 

@@ -188,8 +188,11 @@ extension Converter.Core.Model {
   public var shouldResetDiskState: Converter.DiskState? {
     guard
       shouldResetAmountDst != nil,
+      !amount.value.isEmpty,
       let dstC = dst.isoCode.value,
+      !dstC.isEmpty,
       let srcC = src.isoCode.value,
+      !srcC.isEmpty,
       let rates = rates.value
     else {
       return nil
