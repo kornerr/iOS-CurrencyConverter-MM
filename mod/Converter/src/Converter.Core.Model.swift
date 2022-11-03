@@ -113,15 +113,24 @@ extension Converter.Core.Model {
   }
 
   // Задаём упорядоченный по алфавиту список валют, если:
-  // обновился список валют.
+  //!! ОБНВОИТЬ 1.обновился список валют из сети
+  // 2. с диска
   public var shouldResetCurrencies: [String]? {
-    guard
+    if
       rates.isRecent,
       let r = rates.value
-    else {
-      return nil
+    {
+      return r.rates.keys.sorted()
     }
-    return r.rates.keys.sorted()
+
+    if
+      perform.start,
+      let r = diskState?.rates
+    {
+      return r.rates.keys.sorted()
+    }
+    
+    return nil
   }
 
   // НАДО
@@ -270,12 +279,13 @@ extension Converter.Core.Model {
 
   // Преобразуем сумму из валюты-источника в валюту-назначение, если
   // присутствуют все коэффициенты.
+  // ОБНОВИТЬ про диск
   private func convert(_ money: Double) -> Double? {
     if
       let dstC = dst.isoCode.value,
       let srcC = src.isoCode.value,
-      let dstR = rates.value?.rates[dstC],
-      let srcR = rates.value?.rates[srcC]
+      let dstR = rates.value?.rates[dstC] ?? diskState?.rates.rates[dstC],
+      let srcR = rates.value?.rates[srcC] ?? diskState?.rates.rates[srcC]
     {
       return money / srcR * dstR
     }
