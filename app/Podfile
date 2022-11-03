@@ -9,6 +9,7 @@ target 'App' do
   pod 'Const', :path => '../mod/Const'
   pod 'Converter', :path => '../mod/Converter'
   pod 'ConverterUI', :path => '../mod/ConverterUI'
+  pod 'Disk', :path => '../mod/Disk'
   pod 'MPAK', :path => '../mod/MPAK'
   pod 'Net', :path => '../mod/Net'
   pod 'SUI', :path => '../mod/SUI'

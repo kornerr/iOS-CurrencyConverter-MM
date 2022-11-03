@@ -1,3 +1,4 @@
+import Disk
 import MPAK
 import Net
 
@@ -22,6 +23,7 @@ extension Converter.Core {
     public var amount = MPAK.Recent("")
     public var buttons = Buttons()
     public var currencies = MPAK.Recent<[String]?>(nil)
+    public var diskState: Disk.State?
     public var dst = Currency()
     public var perform = Perform()
     public var rates = MPAK.Recent<Net.ExchangeRates?>(nil)
