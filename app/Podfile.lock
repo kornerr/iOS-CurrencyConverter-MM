@@ -8,10 +8,12 @@ PODS:
     - Alert
     - ConverterUI
     - MPAK
+    - Net
     - SUI
   - ConverterUI (2022.09.09):
     - Const
   - MPAK (2022.06.29)
+  - Net (2022.11.03)
   - SUI (2022.09.08)
 
 DEPENDENCIES:
@@ -21,6 +23,7 @@ DEPENDENCIES:
   - Converter (from `../mod/Converter`)
   - ConverterUI (from `../mod/ConverterUI`)
   - MPAK (from `../mod/MPAK`)
+  - Net (from `../mod/Net`)
   - SUI (from `../mod/SUI`)
 
 EXTERNAL SOURCES:
@@ -36,6 +39,8 @@ EXTERNAL SOURCES:
     :path: "../mod/ConverterUI"
   MPAK:
     :path: "../mod/MPAK"
+  Net:
+    :path: "../mod/Net"
   SUI:
     :path: "../mod/SUI"
 
@@ -43,11 +48,12 @@ SPEC CHECKSUMS:
   About: 23146a2f5ce120e747e6df70e2058fc9d8771df9
   Alert: 903059e6559866c60bd588dfdba23b83594cb42d
   Const: f2aceeaf7dca12b882eeb1afa6b2b0aadaf7afc9
-  Converter: 4f808228b8fb5e6773bc53cd6fd6eb846cb519e2
+  Converter: 3f763fb43dcefcb69b04006e81d608348210e459
   ConverterUI: df5385671e945005e8a046449c5675b9a09fdab0
   MPAK: 5d6c33580def151a582d58e7b851f70dcb20b5ce
+  Net: a2cd74827961a400c18452d05081772e443ffee1
   SUI: 54f52eb52034844063257869bf6e44e520522951
 
-PODFILE CHECKSUM: cdcbfedae0b6fb1b17cec85247e608dd3c2a9de1
+PODFILE CHECKSUM: 57c83a3bab758501d9f77cd69b1762f56528ad97
 
 COCOAPODS: 1.9.1

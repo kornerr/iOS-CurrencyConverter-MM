@@ -1,11 +1,8 @@
 public enum Converter { }
 
 extension Converter {
-  public struct Rates: Codable {
-    public var base_code: String
-    public var rates: [String: Double]
-  }
 
+/*
   public struct DiskState: Codable {
     public var amount: String
     public var dst: String
@@ -24,4 +21,5 @@ extension Converter {
       self.rates = rates
     }
   }
+  */
 }

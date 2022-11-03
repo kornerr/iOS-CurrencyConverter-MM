@@ -2,6 +2,7 @@ import Alert
 import Combine
 import ConverterUI
 import MPAK
+import Net
 import SUI
 import SwiftUI
 
@@ -9,7 +10,7 @@ extension Converter {
   public final class Core: MPAK.Controller<Core.Model> {
     let ui = UIViewController()
     private let isLoadingExchangeRates = PassthroughSubject<Void, Never>()
-    private let resultExchangeRates = PassthroughSubject<Converter.Rates?, Never>()
+    private let resultExchangeRates = PassthroughSubject<Net.ExchangeRates?, Never>()
     private let vm = ConverterUI.VM()
 
     public init() {
@@ -22,7 +23,7 @@ extension Converter {
       setupPipes()
       setupUI()
       setupNetwork()
-      setupStorage()
+      //setupStorage()
     }
   }
 }
@@ -31,12 +32,9 @@ extension Converter.Core {
   private func setupNetwork() {
     // Загружаем курсы валют.
     m.compactMap { $0.shouldRefreshExchangeRates }
-      .flatMap { [weak self] url -> AnyPublisher<Converter.Rates?, Never> in
+      .flatMap { [weak self] url -> AnyPublisher<Net.ExchangeRates?, Never> in
         self?.isLoadingExchangeRates.send()
-        return URLSession.shared.dataTaskPublisher(for: url)
-          .map { v in try? JSONDecoder().decode(Converter.Rates.self, from: v.data) }
-          .catch { _ in Just(nil) }
-          .eraseToAnyPublisher()
+        return Net.loadExchangeRates(url)
       }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.resultExchangeRates.send(v) }
@@ -241,6 +239,7 @@ extension Converter.Core {
 
 // MARK: - Storage
 
+/*
 extension Converter.Core {
   private func setupStorage() {
     // Сохраняем текущее состояние приложения.
@@ -267,6 +266,7 @@ extension Converter.Core {
     }
   }
 }
+*/
 
 extension Converter.Core {
   private static func reportError(_ msg: String) {

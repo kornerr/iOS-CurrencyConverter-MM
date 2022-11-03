@@ -1,4 +1,5 @@
 import MPAK
+import Net
 
 extension Converter.Core {
   public struct Model {
@@ -23,7 +24,7 @@ extension Converter.Core {
     public var currencies = MPAK.Recent<[String]?>(nil)
     public var dst = Currency()
     public var perform = Perform()
-    public var rates = MPAK.Recent<Converter.Rates?>(nil)
+    public var rates = MPAK.Recent<Net.ExchangeRates?>(nil)
     public var src = Currency()
   }
 }
@@ -185,6 +186,7 @@ extension Converter.Core.Model {
   }
 
   // НАДО
+  /*
   public var shouldResetDiskState: Converter.DiskState? {
     guard
       shouldResetAmountDst != nil,
@@ -200,7 +202,8 @@ extension Converter.Core.Model {
 
     return .init(amount: amount.value, dst: dstC, src: srcC, rates: rates)
   }
-
+   */
+  
   // Следует переключить видимость пикера валюты-назначения, если
   // нажали на кнопку валюты-назначения.
   public var shouldResetPickerDstVisibility: Bool? {
