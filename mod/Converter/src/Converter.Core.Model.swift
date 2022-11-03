@@ -139,7 +139,7 @@ extension Converter.Core.Model {
       currencies.isRecent,
       let isoCodes = currencies.value
     {
-      return isoCodes.firstIndex(of: "EUR")
+      return isoCodes.firstIndex(of: diskState?.dst ?? "EUR")
     }
     return nil
   }
@@ -192,7 +192,7 @@ extension Converter.Core.Model {
       currencies.isRecent,
       let isoCodes = currencies.value
     {
-      return isoCodes.firstIndex(of: "USD")
+      return isoCodes.firstIndex(of: diskState?.src ?? "USD")
     }
     return nil
   }
