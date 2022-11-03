@@ -39,7 +39,7 @@ extension Converter.Core.Model {
   public var shouldRefreshExchangeRates: URL? {
     if
       perform.start,
-      let url = URL(string: "https://open.er-api.com/v6/latest/USD")
+      let url = URL(string: Net.apiURL)
     {
       return url
     }
@@ -188,8 +188,7 @@ extension Converter.Core.Model {
   }
 
   // НАДО
-  /*
-  public var shouldResetDiskState: Converter.DiskState? {
+  public var shouldResetDiskState: Disk.State? {
     guard
       shouldResetAmountDst != nil,
       !amount.value.isEmpty,
@@ -204,7 +203,6 @@ extension Converter.Core.Model {
 
     return .init(amount: amount.value, dst: dstC, src: srcC, rates: rates)
   }
-   */
   
   // Следует переключить видимость пикера валюты-назначения, если
   // нажали на кнопку валюты-назначения.

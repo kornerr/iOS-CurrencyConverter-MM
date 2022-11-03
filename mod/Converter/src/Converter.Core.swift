@@ -1,6 +1,7 @@
 import Alert
 import Combine
 import ConverterUI
+import Disk
 import MPAK
 import Net
 import SUI
@@ -23,7 +24,7 @@ extension Converter {
       setupPipes()
       setupUI()
       setupNetwork()
-      //setupStorage()
+      setupStorage()
     }
   }
 }
@@ -239,34 +240,15 @@ extension Converter.Core {
 
 // MARK: - Storage
 
-/*
 extension Converter.Core {
   private func setupStorage() {
     // Сохраняем текущее состояние приложения.
     m.compactMap { $0.shouldResetDiskState }
       .receive(on: DispatchQueue.main)
-      .sink { state in Self.saveState(state) }
+      .sink { state in Disk.saveState(state) }
       .store(in: &subscriptions)
   }
-
-  private static func loadState() -> Converter.DiskState? {
-    if
-      let data = UserDefaults.standard.value(forKey: "state") as? Data,
-      let state = try? JSONDecoder().decode(Converter.DiskState.self, from: data)
-    {
-      return state
-    }
-    return nil
-  }
-
-  private static func saveState(_ state: Converter.DiskState) {
-    if let data = try? JSONEncoder().encode(state) {
-      UserDefaults.standard.set(data, forKey: "state")
-      UserDefaults.standard.synchronize()
-    }
-  }
 }
-*/
 
 extension Converter.Core {
   private static func reportError(_ msg: String) {
