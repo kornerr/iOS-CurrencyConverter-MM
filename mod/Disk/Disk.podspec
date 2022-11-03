@@ -9,7 +9,7 @@ s.author                = 'Michael Kapelko'
 s.source                = { :git => 'https://fake.com/FAKE.git', :tag => s.version }
 s.source_files          = 'src/*.swift'
 s.swift_version         = '5.2'
-s.ios.deployment_target = '14.0'
+s.ios.deployment_target = '16.0'
 s.dependency 'Net'
 
 end

@@ -15,25 +15,31 @@ extension ConverterUI {
         Spacer()
           .background(Const.purple)
           .edgesIgnoringSafeArea(.all)
-        VStack(spacing: 0) {
-          amountSrc
-            .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
-          if vm.isPickerSrcVisible {
-            pickerSrc
-          }
-          amountDst
-            .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
-          if vm.isPickerDstVisible {
-            pickerDst
-          }
-          ZStack {
-            rate
-            info
-          }
-          Spacer()
-        }
+        contents
       }
         .animation(.easeInOut(duration: 0.3))
+    }
+
+    private var contents: some View {
+      VStack(spacing: 0) {
+        amountSrc
+          .padding(EdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16))
+        if vm.isPickerSrcVisible {
+          pickerSrc
+        }
+        amountDst
+          .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+        if vm.isPickerDstVisible {
+          pickerDst
+        }
+        ZStack {
+          rate
+          info
+        }
+        ratesStatus
+          .padding(.leading, 16)
+        Spacer()
+      }
     }
   }
 }
@@ -124,5 +130,27 @@ extension ConverterUI.V {
     }
       .frame(maxWidth: .infinity)
       .background(Color.white.opacity(0.5))
+  }
+
+  private var ratesStatus: some View {
+    VStack {
+      HStack {
+        Text("Exchange rates: \(vm.ratesDate)")
+          //.font(.system(size: 20, weight: .thin))
+          .foregroundColor(.white)
+        Text(vm.ratesStatus)
+          //.font(.system(size: 20, weight: .bold))
+          .foregroundColor(vm.ratesColor)
+      }
+      if vm.isUpdateVisible {
+        Button(action: { vm.update.send() }) {
+          Text("Update exchange rates")
+            //.font(.system(size: 30))
+            .foregroundColor(.white)
+        }
+          .buttonStyle(.bordered)
+      }
+    }
+      .padding(.top, 100)
   }
 }
