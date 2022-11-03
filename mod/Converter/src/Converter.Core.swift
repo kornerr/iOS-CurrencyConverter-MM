@@ -21,10 +21,10 @@ extension Converter {
         debugLog: { print($0) }
       )
 
-      setupPipes()
       setupUI()
       setupNetwork()
       setupStorage()
+      setupPipes()
     }
   }
 }
@@ -242,7 +242,14 @@ extension Converter.Core {
 
 extension Converter.Core {
   private func setupStorage() {
-    // Сохраняем текущее состояние приложения.
+    // При загрузке приложения загружаем состояние с диска.
+    pipeValue(
+      dbg: "diskS",
+      Just(Disk.loadState()).eraseToAnyPublisher(),
+      { $0.diskState = $1 }
+    )
+
+    // Сохраняем текущее состояние приложения на диск.
     m.compactMap { $0.shouldResetDiskState }
       .receive(on: DispatchQueue.main)
       .sink { state in Disk.saveState(state) }
