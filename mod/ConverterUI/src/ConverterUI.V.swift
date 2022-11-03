@@ -95,7 +95,6 @@ extension ConverterUI.V {
           .foregroundColor(Const.purple)
           .padding(.horizontal, 2)
       }
-        //.buttonStyle(BorderlessButtonStyle())
     }
   }
 
@@ -136,16 +135,13 @@ extension ConverterUI.V {
     VStack {
       HStack {
         Text("Exchange rates: \(vm.ratesDate)")
-          //.font(.system(size: 20, weight: .thin))
           .foregroundColor(.white)
         Text(vm.ratesStatus)
-          //.font(.system(size: 20, weight: .bold))
           .foregroundColor(vm.ratesColor)
       }
       if vm.isUpdateVisible {
         Button(action: { vm.update.send() }) {
           Text("Update exchange rates")
-            //.font(.system(size: 30))
             .foregroundColor(.white)
         }
           .buttonStyle(.bordered)
