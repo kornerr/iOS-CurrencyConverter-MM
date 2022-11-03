@@ -68,7 +68,7 @@ extension Converter.Core.Model {
   // 2.  ОПИСАТЬ ВСЕ ПУНКТЫ пользователь изменил сумму для конвертации или обновился курс валют
   public var shouldResetAmountDst: String? {
     guard
-      perform.start ||
+      //?perform.start ||
       amount.isRecent ||
       rates.isRecent ||
       src.isoCode.isRecent ||
@@ -97,10 +97,11 @@ extension Converter.Core.Model {
 
   // Задаём значение поля с суммой для конвертации, если:
   // 1. только что произошёл запуск приложения
+  // ОБНОВИТЬ
   // 2. пользователь изменил значение в поле
   public var shouldResetAmountSrc: String? {
     if perform.start {
-      return "100"
+      return diskState?.amount ?? "100"
     }
     if amount.isRecent {
       let cleared = clearAmount

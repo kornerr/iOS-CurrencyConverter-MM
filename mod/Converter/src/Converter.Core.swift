@@ -31,6 +31,17 @@ extension Converter {
 
 extension Converter.Core {
   private func setupNetwork() {
+    // Сохраняем загруженный с сети курс валют.
+    pipeValue(
+      dbg: "resultER",
+      resultExchangeRates.eraseToAnyPublisher(),
+      {
+        $0.rates.value = $1
+        $0.rates.isRecent = true
+      },
+      { m, _ in m.rates.isRecent = false }
+    )
+
     // Загружаем курсы валют.
     m.compactMap { $0.shouldRefreshExchangeRates }
       .flatMap { [weak self] url -> AnyPublisher<Net.ExchangeRates?, Never> in
@@ -101,16 +112,6 @@ extension Converter.Core {
         $0.src.isPickerVisible.isRecent = true
       },
       { m, _ in m.src.isPickerVisible.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "resultER",
-      resultExchangeRates.eraseToAnyPublisher(),
-      {
-        $0.rates.value = $1
-        $0.rates.isRecent = true
-      },
-      { m, _ in m.rates.isRecent = false }
     )
 
     pipe(
