@@ -244,6 +244,16 @@ extension Converter.Core.Model {
     return nil
   }
 
+  // НАДО
+  public var shouldResetRatesStatus: Bool? {
+    if let rnu = ratesNextUpdate {
+      let now = Date().timeIntervalSince1970
+      return now < TimeInterval(rnu)
+    }
+    
+    return nil
+  }
+
   // Задаём курс единицы валюты, если (ИЛИ):
   // 1. запустили приложение
   // 2. загрузили курс валют
@@ -318,6 +328,25 @@ extension Converter.Core.Model {
       let r = diskState?.rates
     {
       return r.time_last_update_unix
+    }
+
+    return nil
+  }
+
+  // НАДО
+  private var ratesNextUpdate: Int? {
+    if
+      rates.isRecent,
+      let r = rates.value
+    {
+      return r.time_next_update_unix
+    }
+
+    if
+      perform.start,
+      let r = diskState?.rates
+    {
+      return r.time_next_update_unix
     }
 
     return nil
