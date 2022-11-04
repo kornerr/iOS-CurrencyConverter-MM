@@ -6,6 +6,8 @@ public enum Net {
   public struct ExchangeRates: Codable {
     public var base_code: String
     public var rates: [String: Double]
+    public var time_last_update_unix: Int
+    public var time_next_update_unix: Int
   }
 }
 

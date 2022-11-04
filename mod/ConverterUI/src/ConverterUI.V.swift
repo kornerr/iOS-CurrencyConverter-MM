@@ -136,10 +136,10 @@ extension ConverterUI.V {
       HStack {
         Text("Exchange rates: \(vm.ratesDate)")
           .foregroundColor(.white)
-        Text(vm.ratesStatus)
-          .foregroundColor(vm.ratesColor)
+        Text(vm.areRatesUpToDate ? "Up-to-date" : "Outdated")
+          .foregroundColor(vm.areRatesUpToDate ? .green : .red)
       }
-      if vm.isUpdateVisible {
+      if !vm.areRatesUpToDate {
         Button(action: { vm.update.send() }) {
           Text("Update exchange rates")
             .foregroundColor(.white)

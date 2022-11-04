@@ -236,6 +236,12 @@ extension Converter.Core {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.rate = v }
       .store(in: &subscriptions)
+
+    // Задаём дату обновления курса.
+    m.compactMap { $0.shouldResetRatesDate }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.ratesDate = v }
+      .store(in: &subscriptions)
   }
 }
 
