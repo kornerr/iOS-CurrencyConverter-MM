@@ -25,6 +25,7 @@ extension Converter.Core {
     public var currencies = MPAK.Recent<[String]?>(nil)
     public var diskState: Disk.State?
     public var dst = Currency()
+    public var hasStartedUpdatingExchangeRates = false
     public var perform = Perform()
     public var rates = MPAK.Recent<Net.ExchangeRates?>(nil)
     public var src = Currency()
@@ -248,7 +249,23 @@ extension Converter.Core.Model {
   public var shouldResetRatesStatus: Bool? {
     if let rnu = ratesNextUpdate {
       let now = Date().timeIntervalSince1970
-      return now < TimeInterval(rnu)
+      /**///return now < TimeInterval(rnu)
+      return false
+    }
+    
+    return nil
+  }
+
+  // НАДО
+  public var shouldResetRatesUpdate: Bool? {
+    if hasStartedUpdatingExchangeRates {
+      /**/print("ИГР ConverterCM.shouldRRU-1")
+      return true
+    }
+
+    if rates.isRecent {
+      /**/print("ИГР ConverterCM.shouldRRU-2")
+      return false
     }
     
     return nil

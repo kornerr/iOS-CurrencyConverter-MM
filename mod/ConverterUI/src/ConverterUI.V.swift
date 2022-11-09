@@ -141,10 +141,22 @@ extension ConverterUI.V {
       }
       if !vm.areRatesUpToDate {
         Button(action: { vm.update.send() }) {
-          Text("Update exchange rates")
-            .foregroundColor(.white)
+          if vm.isUpdatingRates {
+            HStack {
+              ProgressView()
+                .tint(.white)
+              Spacer()
+                .frame(width: 8)
+              Text("Updating...")
+                .foregroundColor(.white)
+            }
+          } else {
+            Text("Update exchange rates")
+              .foregroundColor(.white)
+          }
         }
           .buttonStyle(.bordered)
+          .disabled(vm.isUpdatingRates)
       }
     }
       .padding(.top, 100)

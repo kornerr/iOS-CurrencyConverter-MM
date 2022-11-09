@@ -10,7 +10,7 @@ import SwiftUI
 extension Converter {
   public final class Core: MPAK.Controller<Core.Model> {
     let ui = UIViewController()
-    private let isLoadingExchangeRates = PassthroughSubject<Void, Never>()
+    private let hasStartedUpdatingExchangeRates = PassthroughSubject<Void, Never>()
     private let resultExchangeRates = PassthroughSubject<Net.ExchangeRates?, Never>()
     private let vm = ConverterUI.VM()
 
@@ -45,7 +45,7 @@ extension Converter.Core {
     // Загружаем курсы валют.
     m.compactMap { $0.shouldRefreshExchangeRates }
       .flatMap { [weak self] url -> AnyPublisher<Net.ExchangeRates?, Never> in
-        self?.isLoadingExchangeRates.send()
+        self?.hasStartedUpdatingExchangeRates.send()
         return Net.loadExchangeRates(url)
       }
       .receive(on: DispatchQueue.main)
@@ -92,6 +92,13 @@ extension Converter.Core {
         $0.src.isoCode.isRecent = true
       },
       { m, _ in m.src.isoCode.isRecent = false }
+    )
+
+    pipe(
+      dbg: "hasSUER",
+      hasStartedUpdatingExchangeRates.eraseToAnyPublisher(),
+      { $0.hasStartedUpdatingExchangeRates = true },
+      { $0.hasStartedUpdatingExchangeRates = false }
     )
 
     pipeValue(
@@ -247,6 +254,12 @@ extension Converter.Core {
     m.compactMap { $0.shouldResetRatesStatus }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] v in self?.vm.areRatesUpToDate = v }
+      .store(in: &subscriptions)
+
+    // Задаём статус загрузки курса.
+    m.compactMap { $0.shouldResetRatesUpdate }
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] v in self?.vm.isUpdatingRates = v }
       .store(in: &subscriptions)
   }
 }

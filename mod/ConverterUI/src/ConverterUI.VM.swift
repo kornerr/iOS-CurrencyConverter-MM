@@ -11,6 +11,7 @@ extension ConverterUI {
     @Published public var currencySrc = ""
     @Published public var isPickerDstVisible = false
     @Published public var isPickerSrcVisible = false
+    @Published public var isUpdatingRates = true
     @Published public var rate = ""
     @Published public var ratesDate = "2022-01-01"
     @Published public var selectedCurrencyDstId = 0
