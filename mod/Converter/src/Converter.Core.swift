@@ -258,7 +258,7 @@ extension Converter.Core {
 
     // Задаём статус загрузки курса.
     m.compactMap { $0.shouldResetRatesUpdate }
-      .receive(on: DispatchQueue.main)
+      .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
       .sink { [weak self] v in self?.vm.isUpdatingRates = v }
       .store(in: &subscriptions)
   }
