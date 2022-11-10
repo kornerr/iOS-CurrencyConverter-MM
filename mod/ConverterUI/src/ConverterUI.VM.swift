@@ -18,11 +18,11 @@ extension ConverterUI {
     @Published public var selectedCurrencySrcId = 0
 
     public let amountHeight: CGFloat
+    public let refreshRates = PassthroughSubject<Void, Never>()
     public let selectCurrencyDst = PassthroughSubject<Void, Never>()
     public let selectCurrencySrc = PassthroughSubject<Void, Never>()
     public let showInfo = PassthroughSubject<Void, Never>()
     public let signIn = PassthroughSubject<Void, Never>()
-    public let update = PassthroughSubject<Void, Never>()
 
     public init() {
       amountHeight = Self.textHeight

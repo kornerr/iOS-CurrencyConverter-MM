@@ -17,6 +17,7 @@ extension Converter.Core {
     }
 
     public struct Perform {
+      public var refreshRates = false
       public var start = false
     }
 
@@ -37,11 +38,14 @@ extension Converter.Core {
 extension Converter.Core.Model {
   // Следует обновить курсы валют, если:
   // 1. только что произошёл запуск приложения
+  // 2 ОБНОВИТь
   public var shouldRefreshExchangeRates: URL? {
+    guard let url = URL(string: Net.apiURL) else { return nil }
     if
-      perform.start,
-      let url = URL(string: Net.apiURL)
+      perform.start ||
+      perform.refreshRates
     {
+      /**/print("ИГР ConverterCM.shouldRER ps/prr: '\(perform.start)'/'\(perform.refreshRates)'")
       return url
     }
     return nil

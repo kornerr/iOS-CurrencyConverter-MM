@@ -140,7 +140,7 @@ extension ConverterUI.V {
           .foregroundColor(vm.areRatesUpToDate ? .green : .red)
       }
       if !vm.areRatesUpToDate {
-        Button(action: { vm.update.send() }) {
+        Button(action: { vm.refreshRates.send() }) {
           if vm.isUpdatingRates {
             HStack {
               ProgressView()

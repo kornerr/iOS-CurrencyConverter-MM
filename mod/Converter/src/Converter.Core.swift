@@ -44,13 +44,23 @@ extension Converter.Core {
 
     // Загружаем курсы валют.
     m.compactMap { $0.shouldRefreshExchangeRates }
+      /**/.handleEvents(receiveOutput: { _ in print("ИГР ConverterC.setupN shouldRER-1") })
       .flatMap { [weak self] url -> AnyPublisher<Net.ExchangeRates?, Never> in
         self?.hasStartedUpdatingExchangeRates.send()
         return Net.loadExchangeRates(url)
       }
       .receive(on: DispatchQueue.main)
+      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupN shouldRER-2: '\(o)'") })
       .sink { [weak self] v in self?.resultExchangeRates.send(v) }
       .store(in: &subscriptions)
+
+    // Запускаем обновление руками.
+    pipe(
+      dbg: "",
+      vm.refreshRates.eraseToAnyPublisher(),
+      { $0.perform.refreshRates = true },
+      { $0.perform.refreshRates = false }
+    )
   }
 
   private func setupPipes() {
