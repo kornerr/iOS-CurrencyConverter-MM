@@ -253,8 +253,8 @@ extension Converter.Core.Model {
   public var shouldResetRatesStatus: Bool? {
     if let rnu = ratesNextUpdate {
       let now = Date().timeIntervalSince1970
-      /**///return now < TimeInterval(rnu)
-      return false
+      return now < TimeInterval(rnu)
+      //return false
     }
     
     return nil
@@ -301,6 +301,21 @@ extension Converter.Core.Model {
 // MARK: - Внутренние вспомогательные вычисления
 
 extension Converter.Core.Model {
+  // Курс валют, поставляемый вместе с приложением
+  // на случай первого запуска приложения без сети.
+  private var bundleRates: Net.ExchangeRates? {
+    if
+      let path = Bundle.main.path(forResource: "rates_oldtest", ofType: "json"),
+      let nsd = NSData(contentsOfFile: path),
+    {
+      let data = Data(referencing: nsd),
+      return try? JSONDecoder().decode(Net.ExchangeRates.self, from: data)
+      //print("ИГР ConverterC.init rates bundle json: '\(rates)'")
+      //return rates
+    }
+    return nil
+  }
+
   // Форматируем (очищаем от лишнего) сумму для конвертации:
   // 1. оставляем лишь точки, запятые и цифры
   // 2. заменяем запятые на точки
