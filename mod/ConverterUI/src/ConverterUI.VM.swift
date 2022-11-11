@@ -5,13 +5,13 @@ extension ConverterUI {
   public final class VM: ObservableObject {
     @Published public var amountDst = ""
     @Published public var amountSrc = ""
-    @Published public var areRatesUpToDate = false
+    @Published public var areRatesUpToDate = true
     @Published public var currencies = [String]()
     @Published public var currencyDst = ""
     @Published public var currencySrc = ""
     @Published public var isPickerDstVisible = false
     @Published public var isPickerSrcVisible = false
-    @Published public var isUpdatingRates = true
+    @Published public var isUpdatingRates = false
     @Published public var rate = ""
     @Published public var ratesDate = "2022-01-01"
     @Published public var selectedCurrencyDstId = 0

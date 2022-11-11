@@ -37,18 +37,23 @@ extension Converter.Core {
 
 extension Converter.Core.Model {
   // Следует обновить курсы валют, если:
-  // 1. только что произошёл запуск приложения
+  // 1. только что произошёл запуск приложения и у нас устарело
   // 2 ОБНОВИТь
   public var shouldRefreshExchangeRates: URL? {
     guard let url = URL(string: Net.apiURL) else { return nil }
     if
-      (
-        perform.start &&
-        shouldResetRatesStatus == true
-      ) ||
+      perform.start,
+      let r = prioritizedRates,
+      Date().timeIntervalSince1970 > TimeInterval(r.time_next_update_unix)
+    {
+      /**/print("ИГР ConverterCM.shouldRER-1")
+      return url
+    }
+
+    if
       perform.refreshRates
     {
-      /**/print("ИГР ConverterCM.shouldRER ps/prr: '\(perform.start)'/'\(perform.refreshRates)'")
+      /**/print("ИГР ConverterCM.shouldRER-2")
       return url
     }
     return nil
@@ -56,6 +61,7 @@ extension Converter.Core.Model {
 
   // Сообщаем об ошибке, если:
   // 1. не удалось загрузить курсы валют
+  // 2. они устарели
   public var shouldReportError: String? {
     if
       rates.isRecent,
@@ -257,7 +263,6 @@ extension Converter.Core.Model {
     if let rnu = ratesNextUpdate {
       let now = Date().timeIntervalSince1970
       return now < TimeInterval(rnu)
-      //return false
     }
     
     return nil
