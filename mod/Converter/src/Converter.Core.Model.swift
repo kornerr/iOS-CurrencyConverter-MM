@@ -24,7 +24,6 @@ extension Converter.Core {
     public var amount = MPAK.Recent("")
     public var buttons = Buttons()
     public var currencies = MPAK.Recent<[String]?>(nil)
-    public var diskState: Disk.State?
     public var dst = Currency()
     public var hasStartedUpdatingExchangeRates = false
     public var perform = Perform()
@@ -354,6 +353,11 @@ extension Converter.Core.Model {
       return money / srcR * dstR
     }
     return nil
+  }
+
+  // НАДО
+  private var diskState: Disk.State? {
+    Disk.loadState()
   }
 
   // Курс валют по приоритету от лучшего к худшему:

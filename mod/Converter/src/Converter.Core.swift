@@ -278,13 +278,6 @@ extension Converter.Core {
 
 extension Converter.Core {
   private func setupStorage() {
-    // При загрузке приложения загружаем состояние с диска.
-    pipeValue(
-      dbg: "diskS",
-      Just(Disk.loadState()).eraseToAnyPublisher(),
-      { $0.diskState = $1 }
-    )
-
     // Сохраняем текущее состояние приложения на диск.
     m.compactMap { $0.shouldResetDiskState }
       .receive(on: DispatchQueue.main)
