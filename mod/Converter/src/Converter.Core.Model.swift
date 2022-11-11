@@ -42,7 +42,10 @@ extension Converter.Core.Model {
   public var shouldRefreshExchangeRates: URL? {
     guard let url = URL(string: Net.apiURL) else { return nil }
     if
-      perform.start ||
+      (
+        perform.start &&
+        shouldResetRatesStatus == true
+      ) ||
       perform.refreshRates
     {
       /**/print("ИГР ConverterCM.shouldRER ps/prr: '\(perform.start)'/'\(perform.refreshRates)'")
@@ -58,7 +61,7 @@ extension Converter.Core.Model {
       rates.isRecent,
       rates.value == nil
     {
-      return "Could not load exchange rates"
+      return "Could not update exchange rates"
     }
     return nil
   }
@@ -119,7 +122,7 @@ extension Converter.Core.Model {
 
   // Задаём упорядоченный по алфавиту список валют, если:
   //!! ОБНВОИТЬ 1.обновился список валют из сети
-  // 2. с диска
+  // 2. с диска или bundle
   public var shouldResetCurrencies: [String]? {
     if
       rates.isRecent,
@@ -130,7 +133,7 @@ extension Converter.Core.Model {
 
     if
       perform.start,
-      let r = diskState?.rates
+      let r = prioritizedRates
     {
       return r.rates.keys.sorted()
     }
@@ -305,13 +308,11 @@ extension Converter.Core.Model {
   // на случай первого запуска приложения без сети.
   private var bundleRates: Net.ExchangeRates? {
     if
-      let path = Bundle.main.path(forResource: "rates_oldtest", ofType: "json"),
-      let nsd = NSData(contentsOfFile: path),
+      let path = Bundle.main.path(forResource: "rates_2022-11-10", ofType: "json"),
+      let nsd = NSData(contentsOfFile: path)
     {
-      let data = Data(referencing: nsd),
+      let data = Data(referencing: nsd)
       return try? JSONDecoder().decode(Net.ExchangeRates.self, from: data)
-      //print("ИГР ConverterC.init rates bundle json: '\(rates)'")
-      //return rates
     }
     return nil
   }
@@ -342,12 +343,20 @@ extension Converter.Core.Model {
     if
       let dstC = dst.isoCode.value,
       let srcC = src.isoCode.value,
-      let dstR = rates.value?.rates[dstC] ?? diskState?.rates.rates[dstC],
-      let srcR = rates.value?.rates[srcC] ?? diskState?.rates.rates[srcC]
+      let dstR = prioritizedRates?.rates[dstC],
+      let srcR = prioritizedRates?.rates[srcC]
     {
       return money / srcR * dstR
     }
     return nil
+  }
+
+  // Курс валют по приоритету от лучшего к худшему:
+  // 1. Сеть (самое новое и точное)
+  // 2. Хранилище (предыдущий запрос к сети)
+  // 3. Bundle (поставляется с приложением, устаревшие данные)
+  private var prioritizedRates: Net.ExchangeRates? {
+    rates.value ?? diskState?.rates ?? bundleRates
   }
 
   // НАДО
@@ -361,7 +370,7 @@ extension Converter.Core.Model {
 
     if
       perform.start,
-      let r = diskState?.rates
+      let r = prioritizedRates
     {
       return r.time_last_update_unix
     }
@@ -380,7 +389,7 @@ extension Converter.Core.Model {
 
     if
       perform.start,
-      let r = diskState?.rates
+      let r = prioritizedRates
     {
       return r.time_next_update_unix
     }
