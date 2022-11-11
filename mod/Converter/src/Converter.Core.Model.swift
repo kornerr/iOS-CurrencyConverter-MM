@@ -114,11 +114,15 @@ extension Converter.Core.Model {
   // 2. пользователь изменил значение в поле
   public var shouldResetAmountSrc: String? {
     if perform.start {
-      return diskState?.amount ?? "100"
+      let a = diskState?.amount ?? "100"
+      /**/print("ИГР ConverterCM.shouldRAS-1: '\(a)'")
+      return a
+      //return diskState?.amount ?? "100"
     }
     if amount.isRecent {
       let cleared = clearAmount
       if cleared != amount.value {
+        /**/print("ИГР ConverterCM.shouldRAS-2: '\(cleared)'")
         return cleared
       }
     }
@@ -219,7 +223,7 @@ extension Converter.Core.Model {
       !dstC.isEmpty,
       let srcC = src.isoCode.value,
       !srcC.isEmpty,
-      let rates = rates.value
+      let rates = prioritizedRates
     else {
       return nil
     }
