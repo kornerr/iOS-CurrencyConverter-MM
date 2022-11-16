@@ -18,8 +18,8 @@ extension About {
     ) {
       ctrl.setupCore(
         sub: &subscriptions,
-        dismissal.didDismiss.eraseToAnyPublisher()
-        //vm.exit.eraseToAnyPublisher()
+        dismissal.didDismiss.eraseToAnyPublisher(),
+        vm.showDocs.eraseToAnyPublisher()
       )
       showUI()
 

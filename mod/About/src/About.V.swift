@@ -23,7 +23,7 @@ extension About {
         Text("Special thanks for currency rates to")
         Spacer()
           .frame(height: 10)
-        Button(action: vm.showAPI.send) {
+        Button(action: vm.showDocs.send) {
           Text(vm.apiURL)
         }
         Spacer()

@@ -19,7 +19,8 @@ extension About {
 extension About.Controller {
   public func setupCore(
     sub: inout [AnyCancellable],
-    _ exit: AnyPublisher<Void, Never>
+    _ exit: AnyPublisher<Void, Never>,
+    _ showDocs: AnyPublisher<Void, Never>
   ) {
     pipe(
       dbg: "exit",
@@ -27,6 +28,14 @@ extension About.Controller {
       exit,
       { $0.buttons.isExitPressed = true },
       { $0.buttons.isExitPressed = false }
+    )
+
+    pipe(
+      dbg: "showD",
+      sub: &sub,
+      showDocs,
+      { $0.buttons.isAPIURLPressed = true },
+      { $0.buttons.isAPIURLPressed = false }
     )
   }
 }

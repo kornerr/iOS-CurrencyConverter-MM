@@ -4,6 +4,7 @@ import MPAK
 extension About {
   public struct Model {
     public struct Buttons {
+      public var isAPIURLPressed = false
       public var isExitPressed = false
     }
 
@@ -17,15 +18,13 @@ extension About {
 extension About.Model {
   // Следует открыть ссылку, если нажали на неё.
   public var shouldOpenURL: URL? {
-    return nil
-/*
     if
-      converterModel
+      buttons.isAPIURLPressed,
       let url = URL(string: "https://www.exchangerate-api.com/docs/overview")
     {
       return url
     }
-*/
+    return nil
   }
 
   // НАДО
