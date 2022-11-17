@@ -10,8 +10,6 @@
 | 3. Открыть экран информации
 |===
 
-.Выбрать валюты
-[caption="1.1.1"]
 image::https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/MMCC_1.1.1.png
 
 
