@@ -10,7 +10,9 @@
 | 3. Открыть экран информации
 |===
 
-image::https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/MMCC_1.1.1.png[1.1.1]
+image::https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/MMCC_1.1.1.png[mascot]
+image::https://asciidoctor.org/images/octocat.jpg[GitHub mascot]
+image::https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/octocat.jpg[mascot-here]
 
 
 == 2. Проблемы с сетью
