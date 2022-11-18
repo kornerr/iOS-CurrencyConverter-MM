@@ -1,3 +1,5 @@
+:imagesdir:https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/
+
 = 1. Основной экран
 
 == 1. Обычное использование
@@ -10,7 +12,7 @@
 | 3. Открыть экран информации
 |===
 
-image::https://raw.githubusercontent.com/kornerr/iOS-CurrencyConverter-MM/main/img/MMCC_1.1.1.png[mascot,200,100]
+image::MMCC_1.1.1.png[mmcc_1.1.1,200,100]
 
 
 == 2. Проблемы с сетью
