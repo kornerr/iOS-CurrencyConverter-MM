@@ -5,11 +5,15 @@ extension About {
   public struct Model {
     public struct Buttons {
       public var isAPIURLPressed = false
-      public var isExitPressed = false
+    }
+
+    public struct Perform {
+      public var exit = false
     }
 
     public var buttons = Buttons()
     public var converterModel = MPAK.Recent<Converter.Core.Model?>(nil)
+    public var perform = Perform()
   }
 }
 
@@ -27,7 +31,8 @@ extension About.Model {
     return nil
   }
 
-  // НАДО
+  // Следует запустить ядро (показать About), если:
+  // только что в основном интерфейсе нажали на кнопку информации.
   public var shouldStartCore: Bool? {
     if
       converterModel.isRecent,
@@ -40,9 +45,10 @@ extension About.Model {
     return nil
   }
 
-  // НАДО
+  // Следует остановить ядро (скрыть About), если:
+  // скрыли интерфейс About смахиванием.
   public var shouldStopCore: Bool? {
-    if buttons.isExitPressed {
+    if perform.exit {
       return true
     }
 

@@ -26,8 +26,8 @@ extension About.Controller {
       dbg: "exit",
       sub: &sub,
       exit,
-      { $0.buttons.isExitPressed = true },
-      { $0.buttons.isExitPressed = false }
+      { $0.perform.exit = true },
+      { $0.perform.exit = false }
     )
 
     pipe(
