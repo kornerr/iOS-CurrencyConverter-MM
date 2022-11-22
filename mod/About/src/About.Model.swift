@@ -11,6 +11,7 @@ extension About {
       public var exit = false
     }
 
+    public var apiURL: String?
     public var buttons = Buttons()
     public var converterModel = MPAK.Recent<Converter.Core.Model?>(nil)
     public var perform = Perform()
@@ -24,7 +25,8 @@ extension About.Model {
   public var shouldOpenURL: URL? {
     if
       buttons.isAPIURLPressed,
-      let url = URL(string: "https://www.exchangerate-api.com/docs/overview")
+      let surl = apiURL,
+      let url = URL(string: surl)
     {
       return url
     }

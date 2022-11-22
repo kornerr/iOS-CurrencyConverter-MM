@@ -19,9 +19,17 @@ extension About {
 extension About.Controller {
   public func setupCore(
     sub: inout [AnyCancellable],
+    _ apiURL: AnyPublisher<String, Never>,
     _ exit: AnyPublisher<Void, Never>,
     _ showDocs: AnyPublisher<Void, Never>
   ) {
+    pipeValue(
+      dbg: "apiU",
+      sub: &sub,
+      apiURL,
+      { $0.apiURL = $1 }
+    )
+
     pipe(
       dbg: "exit",
       sub: &sub,

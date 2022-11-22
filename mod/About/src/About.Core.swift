@@ -18,6 +18,7 @@ extension About {
     ) {
       ctrl.setupCore(
         sub: &subscriptions,
+        vm.$apiURL.eraseToAnyPublisher(),
         dismissal.didDismiss.eraseToAnyPublisher(),
         vm.showDocs.eraseToAnyPublisher()
       )
