@@ -52,6 +52,7 @@ extension About.Core {
     ui.view.backgroundColor = .white
     ui.presentationController?.delegate = dismissal
 
+    // Встраиваем интерфейс на SwiftUI в UIViewController.
     SUI.addSwiftUIViewAsChildVC(swiftUIView: About.V(vm), parentVC: ui)
     wnd?.rootViewController?.present(ui, animated: true)
   }
