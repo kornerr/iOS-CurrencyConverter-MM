@@ -4,10 +4,10 @@ import MPAK
 extension Converter {
   public final class Service {
     private let core: Core
-    private let worldModel: PassthroughSubject<Converter.Core.Model, Never>
+    private let worldModel: PassthroughSubject<Converter.Model, Never>
 
     public init(
-      _ worldModel: PassthroughSubject<Converter.Core.Model, Never>
+      _ worldModel: PassthroughSubject<Converter.Model, Never>
     ) {
       self.worldModel = worldModel
 

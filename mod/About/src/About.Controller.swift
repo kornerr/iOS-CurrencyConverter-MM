@@ -52,7 +52,7 @@ extension About.Controller {
 
 extension About.Controller {
   public func setupService(
-    _ converterModel: AnyPublisher<Converter.Core.Model, Never>
+    _ converterModel: AnyPublisher<Converter.Model, Never>
   ) {
     pipeValue(
       dbg: "converterM",

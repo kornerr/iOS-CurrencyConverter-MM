@@ -2,7 +2,7 @@ import Disk
 import MPAK
 import Net
 
-extension Converter.Core {
+extension Converter {
   public struct Model {
     public struct Buttons {
       public var isDstPressed = false
@@ -34,7 +34,7 @@ extension Converter.Core {
 
 // MARK: - Публичная интерпретация сырых данных
 
-extension Converter.Core.Model {
+extension Converter.Model {
   // Следует обновить курсы валют, если:
   // 1. только что произошёл запуск приложения и у нас устарело
   // 2 ОБНОВИТь
@@ -311,7 +311,7 @@ extension Converter.Core.Model {
 
 // MARK: - Внутренние вспомогательные вычисления
 
-extension Converter.Core.Model {
+extension Converter.Model {
   // Курс валют, поставляемый вместе с приложением
   // на случай первого запуска приложения без сети.
   private var bundleRates: Net.ExchangeRates? {

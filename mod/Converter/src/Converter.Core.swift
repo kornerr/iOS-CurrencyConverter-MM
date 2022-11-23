@@ -8,7 +8,7 @@ import SUI
 import SwiftUI
 
 extension Converter {
-  public final class Core: MPAK.Controller<Core.Model> {
+  public final class Core: MPAK.Controller<Model> {
     let ui = UIViewController()
     private let hasStartedUpdatingExchangeRates = PassthroughSubject<Void, Never>()
     private let resultExchangeRates = PassthroughSubject<Net.ExchangeRates?, Never>()

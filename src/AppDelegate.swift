@@ -5,7 +5,7 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  let converterModel = PassthroughSubject<Converter.Core.Model, Never>()
+  let converterModel = PassthroughSubject<Converter.Model, Never>()
   let openURL = PassthroughSubject<URL, Never>()
   var aboutS: About.Service?
   var application: UIApplication?

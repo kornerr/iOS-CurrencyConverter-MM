@@ -13,7 +13,7 @@ extension About {
 
     public var apiURL: String?
     public var buttons = Buttons()
-    public var converterModel = MPAK.Recent<Converter.Core.Model?>(nil)
+    public var converterModel = MPAK.Recent<Converter.Model?>(nil)
     public var perform = Perform()
   }
 }
