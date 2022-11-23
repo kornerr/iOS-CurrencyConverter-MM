@@ -29,14 +29,9 @@ extension AppDelegate {
     w.makeKeyAndVisible()
     window = w
 
-    converterS = Converter.Service(w, converterModel)
+    converterS = Converter.Service(converterModel)
 
     setupAbout()
-
-    openURL
-      .receive(on: DispatchQueue.main)
-      .sink { v in self.application?.open(v) }
-      .store(in: &subscriptions)
 
     return true
   }
@@ -50,5 +45,10 @@ extension AppDelegate {
         openURL
       )
     aboutS = About.Service(w)
+    
+    openURL
+      .receive(on: DispatchQueue.main)
+      .sink { v in self.application?.open(v) }
+      .store(in: &subscriptions)
   }
 }

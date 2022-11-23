@@ -13,6 +13,11 @@ extension Converter {
     private let hasStartedUpdatingExchangeRates = PassthroughSubject<Void, Never>()
     private let resultExchangeRates = PassthroughSubject<Net.ExchangeRates?, Never>()
     private let vm = ConverterUI.VM()
+    private var wnd: UIWindow?
+
+    deinit {
+      hideUI()
+    }
 
     public init() {
       super.init(
@@ -25,6 +30,7 @@ extension Converter {
       setupNetwork()
       setupStorage()
       setupPipes()
+      showUI()
     }
   }
 }
@@ -181,12 +187,6 @@ extension Converter.Core {
   }
 
   private func setupUI() {
-    // Вставляем интерфейс на SwiftUI в VC.
-    SUI.addSwiftUIViewAsChildVC(swiftUIView: ConverterUI.V(vm), parentVC: ui)
-    // Включаем кнопку очистки на всех полях ввода,
-    // т.к. в SwiftUI нельзя эту кнопку включить.
-    UITextField.appearance().clearButtonMode = .whileEditing
-
     // Форматируем поле ввода.
     m.compactMap { $0.shouldResetAmountSrc }
       .receive(on: DispatchQueue.main)
@@ -292,5 +292,32 @@ extension Converter.Core {
     let ok = UIAlertAction(title: "OK", style: .default)
     alert.addAction(ok)
     alert.show()
+  }
+}
+
+extension Converter.Core {
+  private func hideUI() {
+    wnd?.rootViewController?.presentedViewController?.dismiss(animated: true) { [weak self] in
+      self?.wnd = nil
+    }
+  }
+
+  private func showUI() {
+    // Создаём и отображаем окно с корневым прозрачным VC.
+    wnd = UIWindow(frame: UIScreen.main.bounds)
+    let vc = UIViewController()
+    wnd?.rootViewController = vc
+    wnd?.makeKeyAndVisible()
+
+    // Создаём UI.
+    let ui = UIViewController()
+    // Вставляем интерфейс на SwiftUI в UIViewController.
+    SUI.addSwiftUIViewAsChildVC(swiftUIView: ConverterUI.V(vm), parentVC: ui)
+    // Включаем кнопку очистки на всех полях ввода,
+    // т.к. в SwiftUI нельзя эту кнопку включить.
+    UITextField.appearance().clearButtonMode = .whileEditing
+    // Отображаем UI.
+    ui.modalPresentationStyle = .overFullScreen
+    wnd?.rootViewController?.present(ui, animated: false)
   }
 }
