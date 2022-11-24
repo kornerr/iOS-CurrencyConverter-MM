@@ -13,7 +13,7 @@ extension ConverterUI {
     public var body: some View {
       ZStack {
         Spacer()
-          .background(Const.purple)
+          .background(Color(uiColor: Const.purple))
           .edgesIgnoringSafeArea(.all)
         contents
       }
@@ -72,14 +72,14 @@ extension ConverterUI.V {
       TextField("", text: $vm.amountSrc)
         .keyboardType(.decimalPad)
         .font(.system(size: 60, weight: .thin))
-        .foregroundColor(Const.purple)
+        .foregroundColor(Color(uiColor: Const.purple))
         .minimumScaleFactor(1.0/3.0)
         .lineLimit(1)
         .frame(height: vm.amountHeight)
       Button(action: { vm.selectCurrencySrc.send() }) {
         Text(vm.currencySrc)
           .font(.system(size: 30))
-          .foregroundColor(Const.purple)
+          .foregroundColor(Color(uiColor: Const.purple))
           .padding(.horizontal, 5)
       }
     }
@@ -92,7 +92,7 @@ extension ConverterUI.V {
       Button(action: { vm.showInfo.send() }) {
         Image(systemName: "info.circle")
           .font(.system(size: 23))
-          .foregroundColor(Const.purple)
+          .foregroundColor(Color(uiColor: Const.purple))
           .padding(.horizontal, 2)
       }
     }
@@ -124,7 +124,7 @@ extension ConverterUI.V {
     HStack {
       Text(vm.rate)
         .font(.system(size: 17))
-        .foregroundColor(Const.purple)
+        .foregroundColor(Color(uiColor: Const.purple))
         .padding(.vertical, 3)
     }
       .frame(maxWidth: .infinity)
