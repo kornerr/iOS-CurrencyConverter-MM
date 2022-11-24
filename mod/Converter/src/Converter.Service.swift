@@ -3,20 +3,16 @@ import MPAK
 
 extension Converter {
   public final class Service {
+    public let ctrl = Converter.Controller()
     private let core: Core
-    private let worldModel: PassthroughSubject<Converter.Model, Never>
 
-    public init(
-      _ worldModel: PassthroughSubject<Converter.Model, Never>
-    ) {
-      self.worldModel = worldModel
-
-      core = Converter.Core()
+    public init(_ world: World) {
+      core = Converter.Core(ctrl, world)
     
       // Транслируем модель Core в мир.
-      core.m
+      ctrl.m
         .receive(on: DispatchQueue.main)
-        .sink { model in self.worldModel.send(model) }
+        .sink { model in world.converterModel.send(model) }
         .store(in: &core.subscriptions)
     }
   }

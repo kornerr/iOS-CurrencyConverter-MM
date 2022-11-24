@@ -29,9 +29,8 @@ extension AppDelegate {
     w.makeKeyAndVisible()
     window = w
 
-    converterS = Converter.Service(converterModel)
-
     setupAbout()
+    setupConverter()
 
     return true
   }
@@ -50,5 +49,10 @@ extension AppDelegate {
       .receive(on: DispatchQueue.main)
       .sink { v in self.application?.open(v) }
       .store(in: &subscriptions)
+  }
+
+  private func setupConverter() {
+    let w = Converter.World(converterModel)
+    converterS = Converter.Service(w)
   }
 }

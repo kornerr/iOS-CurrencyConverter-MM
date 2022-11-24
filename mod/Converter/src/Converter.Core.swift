@@ -8,29 +8,45 @@ import SUI
 import SwiftUI
 
 extension Converter {
-  public final class Core: MPAK.Controller<Model> {
+  public final class Core {
     let ui = UIViewController()
     private let hasStartedUpdatingExchangeRates = PassthroughSubject<Void, Never>()
     private let resultExchangeRates = PassthroughSubject<Net.ExchangeRates?, Never>()
     private let vm = ConverterUI.VM()
+    private var subscriptions = [AnyCancellable]()
     private var wnd: UIWindow?
 
     deinit {
       hideUI()
     }
 
-    public init() {
-      super.init(
-        Model(),
-        debugClassName: "ConverterC",
-        debugLog: { print($0) }
+    public init(
+      _ ctrl: Converter.Controller,
+      _ world: Converter.World
+    ) {
+      ctrl.setupCore(
+        sub: &subscriptions,
+        amountSrc: vm.$amountSrc.removeDuplicates().eraseToAnyPublisher(),
+        currencies: vm.$currencies.eraseToAnyPublisher(),
+        currencyDst: vm.$currencyDst.removeDuplicates().eraseToAnyPublisher(),
+        currencySrc: vm.$currencySrc.removeDuplicates().eraseToAnyPublisher(),
+        hasStartedUpdatingExchangeRates: hasStartedUpdatingExchangeRates.eraseToAnyPublisher(),
+        isPickerDstVisible: vm.$isPickerDstVisible.eraseToAnyPublisher(),
+        isPickerSrcVisible: vm.$isPickerSrcVisible.eraseToAnyPublisher(),
+        selectCurrencyDst: vm.selectCurrencyDst.eraseToAnyPublisher(),
+        selectCurrencySrc: vm.selectCurrencySrc.eraseToAnyPublisher(),
+        selectedCurrencyDstId: vm.$selectedCurrencyDstId.eraseToAnyPublisher(),
+        selectedCurrencySrcId: vm.$selectedCurrencySrcId.eraseToAnyPublisher(),
+        showInfo: vm.showInfo.eraseToAnyPublisher()
       )
 
       setupUI()
       setupNetwork()
       setupStorage()
-      setupPipes()
       showUI()
+
+      ctrl.start()
+
     }
   }
 }
@@ -66,123 +82,6 @@ extension Converter.Core {
       vm.refreshRates.eraseToAnyPublisher(),
       { $0.perform.refreshRates = true },
       { $0.perform.refreshRates = false }
-    )
-  }
-
-  private func setupPipes() {
-    pipeValue(
-      dbg: "amount",
-      vm.$amountSrc.removeDuplicates().eraseToAnyPublisher(),
-      {
-        $0.amount.value = $1
-        $0.amount.isRecent = true
-      },
-      { m, _ in m.amount.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "currencies",
-      vm.$currencies.eraseToAnyPublisher(),
-      {
-        $0.currencies.value = $1
-        $0.currencies.isRecent = true
-      },
-      { m, _ in m.currencies.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "currencyD",
-      vm.$currencyDst.removeDuplicates().eraseToAnyPublisher(),
-      {
-        $0.dst.isoCode.value = $1
-        $0.dst.isoCode.isRecent = true
-      },
-      { m, _ in m.dst.isoCode.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "currencyS",
-      vm.$currencySrc.removeDuplicates().eraseToAnyPublisher(),
-      {
-        $0.src.isoCode.value = $1
-        $0.src.isoCode.isRecent = true
-      },
-      { m, _ in m.src.isoCode.isRecent = false }
-    )
-
-    pipe(
-      dbg: "hasSUER",
-      hasStartedUpdatingExchangeRates.eraseToAnyPublisher(),
-      { $0.hasStartedUpdatingExchangeRates = true },
-      { $0.hasStartedUpdatingExchangeRates = false }
-    )
-
-    pipeValue(
-      dbg: "isPDV",
-      vm.$isPickerDstVisible.eraseToAnyPublisher(),
-      {
-        $0.dst.isPickerVisible.value = $1
-        $0.dst.isPickerVisible.isRecent = true
-      },
-      { m, _ in m.dst.isPickerVisible.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "isPSV",
-      vm.$isPickerSrcVisible.eraseToAnyPublisher(),
-      {
-        $0.src.isPickerVisible.value = $1
-        $0.src.isPickerVisible.isRecent = true
-      },
-      { m, _ in m.src.isPickerVisible.isRecent = false }
-    )
-
-    pipe(
-      dbg: "selectCD",
-      vm.selectCurrencyDst.eraseToAnyPublisher(),
-      { $0.buttons.isDstPressed = true },
-      { $0.buttons.isDstPressed = false }
-    )
-
-    pipe(
-      dbg: "selectCS",
-      vm.selectCurrencySrc.eraseToAnyPublisher(),
-      { $0.buttons.isSrcPressed = true },
-      { $0.buttons.isSrcPressed = false }
-    )
-
-    pipeValue(
-      dbg: "selectedCDI",
-      vm.$selectedCurrencyDstId.eraseToAnyPublisher(),
-      {
-        $0.dst.isoCodeId.value = $1
-        $0.dst.isoCodeId.isRecent = true
-      },
-      { m, _ in m.dst.isoCodeId.isRecent = false }
-    )
-
-    pipeValue(
-      dbg: "selectedCSI",
-      vm.$selectedCurrencySrcId.eraseToAnyPublisher(),
-      {
-        $0.src.isoCodeId.value = $1
-        $0.src.isoCodeId.isRecent = true
-      },
-      { m, _ in m.src.isoCodeId.isRecent = false }
-    )
-
-    pipe(
-      dbg: "showI",
-      vm.showInfo.eraseToAnyPublisher(),
-      { $0.buttons.isInfoPressed = true },
-      { $0.buttons.isInfoPressed = false }
-    )
-
-    pipe(
-      dbg: "start",
-      Just(()).eraseToAnyPublisher(),
-      { $0.perform.start = true },
-      { $0.perform.start = false }
     )
   }
 
