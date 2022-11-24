@@ -22,7 +22,7 @@ extension AppDelegate {
     self.application = application
 
     let vc = UIViewController()
-    vc.view.backgroundColor = .white
+    vc.view.backgroundColor = Const.purple
 
     let w = UIWindow(frame: UIScreen.main.bounds)
     w.rootViewController = vc
