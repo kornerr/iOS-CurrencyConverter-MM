@@ -33,6 +33,8 @@ extension Converter {
         hasStartedUpdatingExchangeRates: hasStartedUpdatingExchangeRates.eraseToAnyPublisher(),
         isPickerDstVisible: vm.$isPickerDstVisible.eraseToAnyPublisher(),
         isPickerSrcVisible: vm.$isPickerSrcVisible.eraseToAnyPublisher(),
+        refreshRates: vm.refreshRates.eraseToAnyPublisher(),
+        resultExhangeRates: resultExchangeRates.eraseToAnyPublisher(),
         selectCurrencyDst: vm.selectCurrencyDst.eraseToAnyPublisher(),
         selectCurrencySrc: vm.selectCurrencySrc.eraseToAnyPublisher(),
         selectedCurrencyDstId: vm.$selectedCurrencyDstId.eraseToAnyPublisher(),
@@ -53,17 +55,6 @@ extension Converter {
 
 extension Converter.Core {
   private func setupNetwork() {
-    // Сохраняем загруженный с сети курс валют.
-    pipeValue(
-      dbg: "resultER",
-      resultExchangeRates.eraseToAnyPublisher(),
-      {
-        $0.rates.value = $1
-        $0.rates.isRecent = true
-      },
-      { m, _ in m.rates.isRecent = false }
-    )
-
     // Загружаем курсы валют.
     m.compactMap { $0.shouldRefreshExchangeRates }
       /**/.handleEvents(receiveOutput: { _ in print("ИГР ConverterC.setupN shouldRER-1") })
@@ -75,14 +66,6 @@ extension Converter.Core {
       /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupN shouldRER-2: '\(o)'") })
       .sink { [weak self] v in self?.resultExchangeRates.send(v) }
       .store(in: &subscriptions)
-
-    // Запускаем обновление руками.
-    pipe(
-      dbg: "",
-      vm.refreshRates.eraseToAnyPublisher(),
-      { $0.perform.refreshRates = true },
-      { $0.perform.refreshRates = false }
-    )
   }
 
   private func setupUI() {

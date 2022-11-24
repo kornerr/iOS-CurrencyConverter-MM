@@ -2,8 +2,8 @@ import Combine
 import MPAK
 
 extension Converter {
-  public final class Controller: MPAK.Controller<Converter.Model> {
-    public init() {
+  final class Controller: MPAK.Controller<Converter.Model> {
+    init() {
       super.init(
         Converter.Model(),
         debugClassName: "ConverterC",
@@ -15,9 +15,9 @@ extension Converter {
 
 // MARK: - Core
 
-extension About.Controller {
+extension Converter.Controller {
   // Настраиваем зависимости ядра.
-  public func setupCore(
+  func setupCore(
     sub: inout [AnyCancellable],
     amountSrc: AnyPublisher<String, Never>,
     currencies: AnyPublisher<[String], Never>,
@@ -26,6 +26,7 @@ extension About.Controller {
     hasStartedUpdatingExchangeRates: AnyPublisher<Void, Never>,
     isPickerDstVisible: AnyPublisher<Bool, Never>,
     isPickerSrcVisible: AnyPublisher<Bool, Never>,
+    resultExchangeRates: AnyPublisher<Net.ExchangeRates?, Never>,
     selectCurrencyDst: AnyPublisher<String, Never>,
     selectCurrencySrc: AnyPublisher<String, Never>,
     selectedCurrencyDstId: AnyPublisher<Int, Never>,
@@ -56,6 +57,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "currencyD",
+      sub: &sub,
       currencyDst,
       {
         $0.dst.isoCode.value = $1
@@ -66,6 +68,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "currencyS",
+      sub: &sub,
       currencySrc,
       {
         $0.src.isoCode.value = $1
@@ -76,6 +79,7 @@ extension About.Controller {
 
     pipe(
       dbg: "hasSUER",
+      sub: &sub,
       hasStartedUpdatingExchangeRates,
       { $0.hasStartedUpdatingExchangeRates = true },
       { $0.hasStartedUpdatingExchangeRates = false }
@@ -83,6 +87,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "isPDV",
+      sub: &sub,
       isPickerDstVisible,
       {
         $0.dst.isPickerVisible.value = $1
@@ -93,6 +98,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "isPSV",
+      sub: &sub,
       isPickerSrcVisible,
       {
         $0.src.isPickerVisible.value = $1
@@ -102,7 +108,27 @@ extension About.Controller {
     )
 
     pipe(
+      dbg: "refreshR",
+      sub: &sub,
+      refreshRates,
+      { $0.perform.refreshRates = true },
+      { $0.perform.refreshRates = false }
+    )
+
+    pipeValue(
+      dbg: "resultER",
+      sub: &sub,
+      resultExchangeRates,
+      {
+        $0.rates.value = $1
+        $0.rates.isRecent = true
+      },
+      { m, _ in m.rates.isRecent = false }
+    )
+
+    pipe(
       dbg: "selectCD",
+      sub: &sub,
       selectCurrencyDst,
       { $0.buttons.isDstPressed = true },
       { $0.buttons.isDstPressed = false }
@@ -110,6 +136,7 @@ extension About.Controller {
 
     pipe(
       dbg: "selectCS",
+      sub: &sub,
       selectCurrencySrc,
       { $0.buttons.isSrcPressed = true },
       { $0.buttons.isSrcPressed = false }
@@ -117,6 +144,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "selectedCDI",
+      sub: &sub,
       selectedCurrencyDstId,
       {
         $0.dst.isoCodeId.value = $1
@@ -127,6 +155,7 @@ extension About.Controller {
 
     pipeValue(
       dbg: "selectedCSI",
+      sub: &sub,
       selectedCurrencySrcId,
       {
         $0.src.isoCodeId.value = $1
@@ -137,6 +166,7 @@ extension About.Controller {
 
     pipe(
       dbg: "showI",
+      sub: &sub,
       showInfo,
       { $0.buttons.isInfoPressed = true },
       { $0.buttons.isInfoPressed = false }
@@ -148,6 +178,7 @@ extension About.Controller {
   func start() {
     pipe(
       dbg: "start",
+      sub: &sub,
       Just(()).eraseToAnyPublisher(),
       { $0.perform.start = true },
       { $0.perform.start = false }
