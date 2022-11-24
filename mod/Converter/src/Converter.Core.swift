@@ -20,7 +20,7 @@ extension Converter {
       hideUI()
     }
 
-    public init(
+    init(
       _ ctrl: Converter.Controller,
       _ world: Converter.World
     ) {
@@ -34,7 +34,7 @@ extension Converter {
         isPickerDstVisible: vm.$isPickerDstVisible.eraseToAnyPublisher(),
         isPickerSrcVisible: vm.$isPickerSrcVisible.eraseToAnyPublisher(),
         refreshRates: vm.refreshRates.eraseToAnyPublisher(),
-        resultExhangeRates: resultExchangeRates.eraseToAnyPublisher(),
+        resultExchangeRates: resultExchangeRates.eraseToAnyPublisher(),
         selectCurrencyDst: vm.selectCurrencyDst.eraseToAnyPublisher(),
         selectCurrencySrc: vm.selectCurrencySrc.eraseToAnyPublisher(),
         selectedCurrencyDstId: vm.$selectedCurrencyDstId.eraseToAnyPublisher(),
@@ -43,7 +43,7 @@ extension Converter {
       )
       setupReactions(ctrl)
       showUI()
-      ctrl.start()
+      ctrl.start(sub: &subscriptions)
     }
   }
 }

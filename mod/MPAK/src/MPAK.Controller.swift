@@ -3,11 +3,11 @@ import Combine
 extension MPAK {
   open class Controller<Model> {
     public let m: CurrentValueSubject<Model, Never>
-    public var subscriptions = [AnyCancellable]()
 
     private var debugClassName: String?
     private var debugLog: ((String) -> Void)?
     private var model: Model
+    private var subscriptions = [AnyCancellable]()
 
     public init(
       _ model: Model,

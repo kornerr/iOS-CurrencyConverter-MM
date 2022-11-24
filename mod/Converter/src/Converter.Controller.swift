@@ -1,9 +1,10 @@
 import Combine
 import MPAK
+import Net
 
 extension Converter {
-  final class Controller: MPAK.Controller<Converter.Model> {
-    init() {
+  public final class Controller: MPAK.Controller<Converter.Model> {
+    public init() {
       super.init(
         Converter.Model(),
         debugClassName: "ConverterC",
@@ -26,9 +27,10 @@ extension Converter.Controller {
     hasStartedUpdatingExchangeRates: AnyPublisher<Void, Never>,
     isPickerDstVisible: AnyPublisher<Bool, Never>,
     isPickerSrcVisible: AnyPublisher<Bool, Never>,
+    refreshRates: AnyPublisher<Void, Never>,
     resultExchangeRates: AnyPublisher<Net.ExchangeRates?, Never>,
-    selectCurrencyDst: AnyPublisher<String, Never>,
-    selectCurrencySrc: AnyPublisher<String, Never>,
+    selectCurrencyDst: AnyPublisher<Void, Never>,
+    selectCurrencySrc: AnyPublisher<Void, Never>,
     selectedCurrencyDstId: AnyPublisher<Int, Never>,
     selectedCurrencySrcId: AnyPublisher<Int, Never>,
     showInfo: AnyPublisher<Void, Never>
@@ -175,7 +177,9 @@ extension Converter.Controller {
 
   // Запускаем первичные реактивные цепочки.
   // Следует выполнять после настройки всех реактивных цепочек.
-  func start() {
+  func start(
+    sub: inout [AnyCancellable]
+  ) {
     pipe(
       dbg: "start",
       sub: &sub,
