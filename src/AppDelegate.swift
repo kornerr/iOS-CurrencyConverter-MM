@@ -20,16 +20,13 @@ extension AppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    self.application = application
-
     let vc = UIViewController()
     vc.view.backgroundColor = Const.purple
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.rootViewController = vc
+    window?.makeKeyAndVisible()
 
-    let w = UIWindow(frame: UIScreen.main.bounds)
-    w.rootViewController = vc
-    w.makeKeyAndVisible()
-    window = w
-
+    self.application = application
     setupAbout()
     setupConverter()
 
