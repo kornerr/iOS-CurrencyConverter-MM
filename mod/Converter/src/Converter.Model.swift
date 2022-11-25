@@ -36,8 +36,10 @@ extension Converter {
 
 extension Converter.Model {
   // Следует обновить курсы валют, если:
-  // 1. только что произошёл запуск приложения и у нас устарело
-  // 2 ОБНОВИТь
+  // 1.1. только что произошёл запуск приложения
+  // 1.2. имеющиеся данные устарели
+  // или
+  // 2. запросили обновление руками
   public var shouldRefreshExchangeRates: URL? {
     guard let url = URL(string: Net.apiURL) else { return nil }
     if
@@ -45,22 +47,18 @@ extension Converter.Model {
       let r = prioritizedRates,
       Date().timeIntervalSince1970 > TimeInterval(r.time_next_update_unix)
     {
-      /**/print("ИГР ConverterCM.shouldRER-1")
       return url
     }
 
-    if
-      perform.refreshRates
-    {
-      /**/print("ИГР ConverterCM.shouldRER-2")
+    if perform.refreshRates {
       return url
     }
+
     return nil
   }
 
   // Сообщаем об ошибке, если:
-  // 1. не удалось загрузить курсы валют
-  // 2. они устарели
+  // не удалось загрузить курсы валют
   public var shouldReportError: String? {
     if
       rates.isRecent,
@@ -72,16 +70,12 @@ extension Converter.Model {
   }
 
   // Вычисляем значение поля назначения, если:
-  // 1. только что произошёл запуск приложения
-  // 1. запустили приложение
-  // 2. изменили сумму валюты-источника
-  // 3. загрузили курс
-  // 4. изменили валюту-источник
-  // 5. изменили валюту-назначение
-  // 2.  ОПИСАТЬ ВСЕ ПУНКТЫ пользователь изменил сумму для конвертации или обновился курс валют
+  // 1. изменили сумму для конвертации
+  // 2. загрузили курсы валют
+  // 3. изменили валюту-источник
+  // 4. изменили валюту-назначение
   public var shouldResetAmountDst: String? {
     guard
-      //?perform.start ||
       amount.isRecent ||
       rates.isRecent ||
       src.isoCode.isRecent ||
@@ -108,21 +102,16 @@ extension Converter.Model {
     return integer + "." + fraction.prefix(2)
   }
 
-  // Задаём значение поля с суммой для конвертации, если:
+  // Задаём сумму для конвертации, если:
   // 1. только что произошёл запуск приложения
-  // ОБНОВИТЬ
   // 2. пользователь изменил значение в поле
   public var shouldResetAmountSrc: String? {
     if perform.start {
-      let a = diskState?.amount ?? "100"
-      /**/print("ИГР ConverterCM.shouldRAS-1: '\(a)'")
-      return a
-      //return diskState?.amount ?? "100"
+      return diskState?.amount ?? "100"
     }
     if amount.isRecent {
       let cleared = clearAmount
       if cleared != amount.value {
-        /**/print("ИГР ConverterCM.shouldRAS-2: '\(cleared)'")
         return cleared
       }
     }
@@ -130,8 +119,8 @@ extension Converter.Model {
   }
 
   // Задаём упорядоченный по алфавиту список валют, если:
-  //!! ОБНВОИТЬ 1.обновился список валют из сети
-  // 2. с диска или bundle
+  // 1. получили курс валют из сети
+  // 2. только что запустили приложение
   public var shouldResetCurrencies: [String]? {
     if
       rates.isRecent,
@@ -150,7 +139,8 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Следует изменить порядковый номер валюты-назначения, если:
+  // только что изменился список валют
   public var shouldResetCurrencyDstId: Int? {
     if
       currencies.isRecent,
@@ -162,15 +152,8 @@ extension Converter.Model {
   }
 
   // Задаём валюту-назначение, если:
-  // 1. УБРАТЬ только что произошёл запуск приложения
-  // 2. НАДО
+  // только что поменялся её порядковый номер
   public var shouldResetCurrencyDst: String? {
-      /*
-    if perform.start {
-      return "EUR"
-    }
-    */
-    
     if
       dst.isoCodeId.isRecent,
       let currs = currencies.value,
@@ -182,16 +165,9 @@ extension Converter.Model {
     return nil
   }
 
-  // Задаём значение валюты-источника, если:
-  // 1. УБРАТЬ только что произошёл запуск приложения
-  // 2. НАДО
+  // Задаём валюту-источник, если:
+  // только что поменялся её порядковый номер
   public var shouldResetCurrencySrc: String? {
-      /*
-    if perform.start {
-      return "USD"
-    }
-    */
-
     if
       src.isoCodeId.isRecent,
       let currs = currencies.value,
@@ -203,7 +179,8 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Задаём порядковый номер валюты-источинка, если:
+  // только что изменился список валют
   public var shouldResetCurrencySrcId: Int? {
     if
       currencies.isRecent,
@@ -214,7 +191,12 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Следует сохранить текущее состояие приложения, если:
+  // 1. изменился результат конвертации
+  // 2. сумма для конвертации корректна
+  // 3. валюта-назначение корректна
+  // 4. валюта-источник корректна
+  // 5. есть курсы валют
   public var shouldResetDiskState: Disk.State? {
     guard
       shouldResetAmountDst != nil,
@@ -231,7 +213,7 @@ extension Converter.Model {
     return .init(amount: amount.value, dst: dstC, src: srcC, rates: rates)
   }
   
-  // Следует переключить видимость пикера валюты-назначения, если
+  // Переключаем видимость пикера валюты-назначения, если:
   // нажали на кнопку валюты-назначения.
   public var shouldResetPickerDstVisibility: Bool? {
     if buttons.isDstPressed {
@@ -240,7 +222,7 @@ extension Converter.Model {
     return nil
   }
 
-  // Переключаем видимость пикера валюты-источника, если
+  // Переключаем видимость пикера валюты-источника, если:
   // нажали на кнопку валюты-источника.
   public var shouldResetPickerSrcVisibility: Bool? {
     if buttons.isSrcPressed {
@@ -249,7 +231,8 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Задаём дату последнего обновления курсов, если:
+  // есть эта дата.
   public var shouldResetRatesDate: String? {
     if let rlu = ratesLastUpdate {
       let dt = Date(timeIntervalSince1970: TimeInterval(rlu))
@@ -261,7 +244,8 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Задаём статус актуальности курсов валют, если:
+  // есть этот статус.
   public var shouldResetRatesStatus: Bool? {
     if let rnu = ratesNextUpdate {
       let now = Date().timeIntervalSince1970
@@ -271,22 +255,22 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Следует обновить статус загрузки курсов валют, если:
+  // 1. только что начали их загрузку
+  // 2. только что загрузили их
   public var shouldResetRatesUpdate: Bool? {
     if hasStartedUpdatingExchangeRates {
-      /**/print("ИГР ConverterCM.shouldRRU-1")
       return true
     }
 
     if rates.isRecent {
-      /**/print("ИГР ConverterCM.shouldRRU-2")
       return false
     }
     
     return nil
   }
 
-  // Задаём курс единицы валюты, если (ИЛИ):
+  // Задаём справочный курс единицы валюты, если (ИЛИ):
   // 1. запустили приложение
   // 2. загрузили курс валют
   // 3. изменили валюту-источник
@@ -346,7 +330,6 @@ extension Converter.Model {
 
   // Преобразуем сумму из валюты-источника в валюту-назначение, если
   // присутствуют все коэффициенты.
-  // ОБНОВИТЬ про диск
   private func convert(_ money: Double) -> Double? {
     if
       let dstC = dst.isoCode.value,
@@ -359,7 +342,7 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Сохранённые на диск данные.
   private var diskState: Disk.State? {
     Disk.loadState()
   }
@@ -372,7 +355,9 @@ extension Converter.Model {
     rates.value ?? diskState?.rates ?? bundleRates
   }
 
-  // НАДО
+  // Дата последнего обновления курсов валют, если:
+  // 1. только что загрузили их
+  // 2. только что запустили приложение
   private var ratesLastUpdate: Int? {
     if
       rates.isRecent,
@@ -391,7 +376,9 @@ extension Converter.Model {
     return nil
   }
 
-  // НАДО
+  // Дата следующего обновления курсов валют, если:
+  // 1. только что загрузили их
+  // 2. только что запустили приложение
   private var ratesNextUpdate: Int? {
     if
       rates.isRecent,
