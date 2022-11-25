@@ -9,7 +9,7 @@ public enum Net {
   }
 
   public static let apiURL = "https://open.er-api.com/v6/latest/USD"
-  /**/private static let session = createURLSession()
+  private static let session = createURLSession()
 }
 
 extension Net {
@@ -21,7 +21,7 @@ extension Net {
   }
 }
 
-/**/extension Net {
+extension Net {
   private static func createURLSession() -> URLSession {
     let cfg = URLSessionConfiguration.default
     cfg.requestCachePolicy = .reloadIgnoringLocalCacheData

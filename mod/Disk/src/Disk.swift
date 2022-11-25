@@ -29,17 +29,14 @@ extension Disk {
       let data = UserDefaults.standard.value(forKey: storageKey) as? Data,
       let state = try? JSONDecoder().decode(Disk.State.self, from: data)
     {
-      /**/print("ИГР Disk.loadS amount: '\(state.amount)'")
       return state
     }
     return nil
   }
 
   public static func saveState(_ state: Disk.State) {
-    /**/print("ИГР Disk.saveS-1")
     guard let data = try? JSONEncoder().encode(state) else { return }
     UserDefaults.standard.set(data, forKey: storageKey)
     //UserDefaults.standard.synchronize()
-    /**/print("ИГР Disk.saveS-2 amount: '\(state.amount)'")
   }
 }
