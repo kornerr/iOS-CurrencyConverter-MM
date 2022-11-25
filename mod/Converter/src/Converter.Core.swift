@@ -53,13 +53,11 @@ extension Converter.Core {
     // Загружаем курсы валют.
     ctrl.m
       .compactMap { $0.shouldRefreshExchangeRates }
-      /**/.handleEvents(receiveOutput: { _ in print("ИГР ConverterC.setupN shouldRER-1") })
       .flatMap { [weak self] url -> AnyPublisher<Net.ExchangeRates?, Never> in
         self?.hasStartedUpdatingExchangeRates.send()
         return Net.loadExchangeRates(url)
       }
       .receive(on: DispatchQueue.main)
-      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupN shouldRER-2: '\(o)'") })
       .sink { [weak self] v in self?.resultExchangeRates.send(v) }
       .store(in: &subscriptions)
 
@@ -74,7 +72,6 @@ extension Converter.Core {
     ctrl.m
       .compactMap { $0.shouldResetAmountDst }
       .receive(on: DispatchQueue.main)
-      /**/.handleEvents(receiveOutput: { o in print("ИГР ConverterC.setupU shouldRAD: '\(o)'") })
       .sink { [weak self] v in self?.vm.amountDst = v }
       .store(in: &subscriptions)
 
@@ -175,9 +172,7 @@ extension Converter.Core {
 
 extension Converter.Core {
   private func hideUI() {
-    wnd?.rootViewController?.presentedViewController?.dismiss(animated: true) { [weak self] in
-      self?.wnd = nil
-    }
+    wnd = nil
   }
 
   private static func reportError(_ msg: String) {
@@ -188,12 +183,6 @@ extension Converter.Core {
   }
 
   private func showUI() {
-    // Создаём и отображаем окно с корневым прозрачным VC.
-    wnd = UIWindow(frame: UIScreen.main.bounds)
-    let vc = UIViewController()
-    wnd?.rootViewController = vc
-    wnd?.makeKeyAndVisible()
-
     // Создаём UI.
     let ui = UIViewController()
     // Вставляем интерфейс на SwiftUI в UIViewController.
@@ -201,8 +190,9 @@ extension Converter.Core {
     // Включаем кнопку очистки на всех полях ввода,
     // т.к. в SwiftUI нельзя эту кнопку включить.
     UITextField.appearance().clearButtonMode = .whileEditing
-    // Отображаем UI.
-    ui.modalPresentationStyle = .overFullScreen
-    wnd?.rootViewController?.present(ui, animated: false)
+    // Отображаем UI в отдельном окне.
+    wnd = UIWindow(frame: UIScreen.main.bounds)
+    wnd?.rootViewController = ui
+    wnd?.makeKeyAndVisible()
   }
 }
