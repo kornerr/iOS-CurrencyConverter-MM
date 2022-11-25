@@ -1,0 +1,1 @@
+Отображение UIAlertController в отдельном UIWindow
