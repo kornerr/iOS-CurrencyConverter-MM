@@ -1,0 +1,6 @@
+framework module Net {
+  umbrella header "Net-umbrella.h"
+
+  export *
+  module * { export * }
+}

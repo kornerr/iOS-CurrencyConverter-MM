@@ -1,0 +1,66 @@
+PODS:
+  - About (2022.10.19):
+    - Converter
+    - MPAK
+  - Alert (2022.09.21)
+  - Const (2022.09.12)
+  - Converter (2022.09.07):
+    - Alert
+    - ConverterUI
+    - Disk
+    - MPAK
+    - Net
+    - SUI
+  - ConverterUI (2022.09.09):
+    - Const
+  - Disk (2022.11.03):
+    - Net
+  - MPAK (2022.06.29)
+  - Net (2022.11.03)
+  - SUI (2022.09.08)
+
+DEPENDENCIES:
+  - About (from `../mod/About`)
+  - Alert (from `../mod/Alert`)
+  - Const (from `../mod/Const`)
+  - Converter (from `../mod/Converter`)
+  - ConverterUI (from `../mod/ConverterUI`)
+  - Disk (from `../mod/Disk`)
+  - MPAK (from `../mod/MPAK`)
+  - Net (from `../mod/Net`)
+  - SUI (from `../mod/SUI`)
+
+EXTERNAL SOURCES:
+  About:
+    :path: "../mod/About"
+  Alert:
+    :path: "../mod/Alert"
+  Const:
+    :path: "../mod/Const"
+  Converter:
+    :path: "../mod/Converter"
+  ConverterUI:
+    :path: "../mod/ConverterUI"
+  Disk:
+    :path: "../mod/Disk"
+  MPAK:
+    :path: "../mod/MPAK"
+  Net:
+    :path: "../mod/Net"
+  SUI:
+    :path: "../mod/SUI"
+
+SPEC CHECKSUMS:
+  About: 6bcfb8bd98a93fd1f24df87c98a4f68f0f39c0f9
+  Alert: 609fee4c19c7aa5de51a29c39600b4f607055eae
+  Const: 3225ee961a5e5d73fee357c5068530146554fefe
+  Converter: 850a69cb5593213550f8ac371105d588af5ef83b
+  ConverterUI: 986dbb8d828651efb0e6034e45c7ab19c5ecc425
+  Disk: ceca22be17476ef1b2374e3da199c06e4176dfe4
+  MPAK: dbddff8a9199ff6f3f980504dc592ebc402fd8d5
+  Net: 43a8edf8d373ed9f95294af707b2402e6f5022ac
+  SUI: 091a6749c4f15aec2c9a067f7863b4531e43c2dc
+
+PODFILE CHECKSUM: 6df6e5adcd996f65b36fc04e287bbe931b4611b4
+
+COCOAPODS: 1.9.1

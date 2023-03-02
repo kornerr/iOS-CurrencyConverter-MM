@@ -1,0 +1,6 @@
+framework module Const {
+  umbrella header "Const-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "Storage",
+  "version": "2022.10.26",
+  "license": "ZLIB",
+  "summary": "MM",
+  "homepage": "https://github.com/kornerr/iOS-CurrencyConverter-MM",
+  "authors": "Michael Kapelko",
+  "source": {
+    "git": "https://fake.com/FAKE.git",
+    "tag": "2022.10.26"
+  },
+  "source_files": "src/*.swift",
+  "swift_versions": "5.2",
+  "platforms": {
+    "ios": "14.0"
+  },
+  "swift_version": "5.2"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "MPAK",
+  "version": "2022.06.29",
+  "license": "ZLIB",
+  "summary": "MM",
+  "homepage": "https://github.com/kornerr/MM",
+  "authors": "Michael Kapelko",
+  "source": {
+    "git": "https://fake.com/FAKE.git",
+    "tag": "2022.06.29"
+  },
+  "source_files": "src/*.swift",
+  "swift_versions": "5.2",
+  "platforms": {
+    "ios": "16.0"
+  },
+  "swift_version": "5.2"
+}

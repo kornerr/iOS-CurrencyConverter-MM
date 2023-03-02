@@ -1,0 +1,10 @@
+${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-frameworks.sh
+${BUILT_PRODUCTS_DIR}/About/About.framework
+${BUILT_PRODUCTS_DIR}/Alert/Alert.framework
+${BUILT_PRODUCTS_DIR}/Const/Const.framework
+${BUILT_PRODUCTS_DIR}/Converter/Converter.framework
+${BUILT_PRODUCTS_DIR}/ConverterUI/ConverterUI.framework
+${BUILT_PRODUCTS_DIR}/Disk/Disk.framework
+${BUILT_PRODUCTS_DIR}/MPAK/MPAK.framework
+${BUILT_PRODUCTS_DIR}/Net/Net.framework
+${BUILT_PRODUCTS_DIR}/SUI/SUI.framework
